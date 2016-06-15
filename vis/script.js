@@ -50,15 +50,17 @@ var Vis = function () {
     this.axisGroupX = this.content.append('g').attr('class', 'axis-x');
     this.axisGroupY = this.content.append('g').attr('class', 'axis-y');
     this.lineGenerator = d3.svg.line().interpolate('basis').defined(function (d) {
-      return d.date >= _this.beginTime;
+      return d.date > _this.beginTime;
     });
     this.line = null;
     this.eventMarkers = null;
+    this.pastTime = formatDate.parse('1940M01');
     this.beginTime = formatDate.parse('1960M01');
     this.currentTime = formatDate.parse('1960M01');
     this.finalTime = formatDate.parse('2016M05');
     this.currentPrice = null;
     this.transactionData = [];
+    this.transition = false;
 
     window.onresize = function () {
       _this.resizeGraph();
@@ -76,6 +78,7 @@ var Vis = function () {
       d3.csv(visPath + 'vis/data/oil.csv', this.transformPriceData, function (err, data) {
         if (err) throw err;
         _this2.priceData = data;
+
         _this2.currentPrice = data[0].price;
         d3.csv(visPath + 'vis/data/events.csv', _this2.transformEventData, function (err, data) {
           if (err) throw err;
@@ -147,7 +150,7 @@ var Vis = function () {
       var _this5 = this;
 
       var leftTime = new Date(this.currentTime);
-      leftTime.setFullYear(leftTime.getFullYear() - 10);
+      leftTime.setFullYear(leftTime.getFullYear() - 20);
 
       return data.filter(function (d) {
         return d.date >= leftTime && d.date <= _this5.currentTime;
@@ -228,8 +231,8 @@ var Vis = function () {
 
       var tick = function tick() {
         if (_this7.playing && _this7.currentTime !== _this7.finalTime) {
+          if (!_this7.transition) _this7.update();
           requestAnimationFrame(tick);
-          _this7.update();
         }
       };
 
@@ -316,14 +319,18 @@ var Vis = function () {
       var _this9 = this;
 
       var data = this.getDataCrop(this.priceData);
+
       this.currentPrice = data[data.length - 1].price;
 
-      this.scaleX.domain(d3.extent(data, function (d) {
+      var xExtent = d3.extent(data, function (d) {
         return d.date;
-      }));
-      this.scaleY.domain(d3.extent(data, function (d) {
+      });
+      var yExtent = d3.extent(data, function (d) {
         return d.price;
-      }));
+      });
+
+      this.scaleX.domain(xExtent);
+      this.scaleY.domain([0, yExtent[1]]);
 
       this.scaleX.range([0, this.width - this.leftPadding]);
       this.scaleY.range([this.innerHeight, 0]);
@@ -341,15 +348,19 @@ var Vis = function () {
 
       this.line.datum(data);
 
-      var timeTick = new Date(this.currentTime);
-      timeTick.setMonth(timeTick.getMonth() + 1);
-
-      var timeOffset = new Date(this.currentTime);
-      timeOffset.setYear(timeOffset.getFullYear() + 10);
-
       this.line.attr('stroke-width', 4).attr('d', this.lineGenerator);
 
-      this.linecontainer.attr('transform', null).attr('transform', 'translate(' + 10 + ', ' + '0)');
+      //    this.transition = true;
+
+      // this.linecontainer
+      //     .attr('transform', null)
+      //     .transition()
+      //     .duration(1000)
+      //     .attr('transform', 'translate(' + 0 + ', ' + '0)')
+      //     .each('end', () => {
+      //       console.log('dendnd');
+      //       this.transition = false;
+      //     });
     }
   }, {
     key: 'transformPriceData',

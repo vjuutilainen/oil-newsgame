@@ -42,14 +42,16 @@ class Vis {
     this.axisY = d3.svg.axis().orient('right').ticks(10);
     this.axisGroupX = this.content.append('g').attr('class', 'axis-x');
     this.axisGroupY = this.content.append('g').attr('class', 'axis-y');
-    this.lineGenerator = d3.svg.line().interpolate('basis').defined((d) => d.date >= this.beginTime );
+    this.lineGenerator = d3.svg.line().interpolate('basis').defined((d) => d.date > this.beginTime );
     this.line = null;
     this.eventMarkers = null;
+    this.pastTime = formatDate.parse('1940M01');
     this.beginTime = formatDate.parse('1960M01');
     this.currentTime = formatDate.parse('1960M01');
     this.finalTime = formatDate.parse('2016M05');
     this.currentPrice = null;
     this.transactionData = [];
+    this.transition = false;
 
     window.onresize = () => {
       this.resizeGraph();
@@ -64,6 +66,7 @@ class Vis {
     d3.csv(visPath + 'vis/data/oil.csv', this.transformPriceData, (err, data) => {
       if(err) throw err;
       this.priceData = data;
+
       this.currentPrice = data[0].price;
       d3.csv(visPath + 'vis/data/events.csv', this.transformEventData, (err, data) => {
         if(err) throw err;
@@ -131,7 +134,7 @@ class Vis {
   getDataCrop(data) {
 
     let leftTime = new Date(this.currentTime);
-    leftTime.setFullYear(leftTime.getFullYear() - 10);
+    leftTime.setFullYear(leftTime.getFullYear() - 20);
     
     return data.filter(d => {
       return d.date >= leftTime && d.date <= this.currentTime;
@@ -215,8 +218,8 @@ class Vis {
     
     let tick = () => {
       if(this.playing && this.currentTime !== this.finalTime) {
-       requestAnimationFrame(tick); 
-       this.update();
+       if(!this.transition) this.update(); 
+       requestAnimationFrame(tick);
       }
     };
 
@@ -288,11 +291,15 @@ class Vis {
   updateGraph() {
 
     let data = this.getDataCrop(this.priceData);
+
     this.currentPrice = data[data.length - 1].price;
+    
+    let xExtent = d3.extent(data, (d) => d.date );
+    let yExtent = d3.extent(data, (d) => d.price );
 
-    this.scaleX.domain(d3.extent(data, (d) => d.date ));
-    this.scaleY.domain(d3.extent(data, (d) => d.price ));
-
+    this.scaleX.domain(xExtent);
+    this.scaleY.domain([0, yExtent[1]]);
+    
     this.scaleX.range([0, this.width - this.leftPadding]);
     this.scaleY.range([this.innerHeight, 0]);
     this.axisX.scale(this.scaleX);
@@ -306,19 +313,21 @@ class Vis {
 
     this.line.datum(data);
 
-    let timeTick = new Date(this.currentTime);
-    timeTick.setMonth(timeTick.getMonth() + 1);
-
-    let timeOffset = new Date(this.currentTime);
-    timeOffset.setYear(timeOffset.getFullYear() + 10);
-
     this.line
         .attr('stroke-width', 4)
         .attr('d', this.lineGenerator);
 
-    this.linecontainer
-        .attr('transform', null)
-        .attr('transform', 'translate(' + 10 + ', ' + '0)');
+//    this.transition = true;
+
+    // this.linecontainer
+    //     .attr('transform', null)
+    //     .transition()
+    //     .duration(1000)
+    //     .attr('transform', 'translate(' + 0 + ', ' + '0)')
+    //     .each('end', () => {
+    //       console.log('dendnd');
+    //       this.transition = false;
+    //     });
 
         
         
