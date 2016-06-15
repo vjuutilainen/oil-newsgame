@@ -1,38 +1,69 @@
 @import 'libs/prefixer.less';
+html,body {
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
 .container {
   /* For old browsers */
   display: block;
   height: 100%;
-  // Result container.
-  .result_container {
-    font-size: 40px;
-    text-align: center;
-    width: 100%;
+  h1,
+  h3,
+  p {
+    padding: 0 10px;
   }
-
-  // Vis container.
-  .vis_container {
-
-  }
-
-  // Controls container.
-  .controls_container {
+  &.init_container {
+    display: block;
     .control {
-      background-color: #ccc;
-      border: 1px solid #000;
-      bottom: 0;
+      background-color: #fff;
+      border: 0;
       font-size: 20px;
-      height: 70px;
-      line-height: 70px;
-      position: absolute;
+      height: 50px;
+      outline: none;
+      width: 100%;
+    }
+  }
+  &.game_container {
+    display: none;
+    // Result container.
+    .result_container {
+      background-color: #fff;
+      color: #000;
+      font-size: 40px;
       text-align: center;
-      vertical-align: middle;
-      width: 90px;
-      &.sell {
-        left: 0;
-      }
-      &.buy {
-        right: 0;
+      width: 100%;
+    }
+
+    // Vis container.
+    .vis_container {
+      border: 1px solid #fff;
+      box-sizing: border-box;
+      height: 400px;
+      width: 100%;
+    }
+
+    // Controls container.
+    .controls_container {
+      .control {
+        background-color: #fff;
+        border: 0;
+        bottom: 0;
+        font-size: 20px;
+        height: 70px;
+        line-height: 70px;
+        position: absolute;
+        text-align: center;
+        vertical-align: middle;
+        width: 90px;
+        outline: none;
+        &.sell {
+          left: 0;
+        }
+        &.buy {
+          right: 0;
+        }
       }
     }
   }
