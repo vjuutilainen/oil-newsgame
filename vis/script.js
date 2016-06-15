@@ -47,7 +47,7 @@ class Vis {
   }
 
   loadData(cb) {
-    d3.csv('data/oil.csv', this.transformData, (err, data) => {
+    d3.csv('vis/data/oil.csv', this.transformData, (err, data) => {
       if(err) throw err;
       this.priceData = data;
       cb(data);
