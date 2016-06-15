@@ -37,11 +37,12 @@ class Vis {
   constructor() {
     this.width = window.innerWidth;
     this.height = window.innerWidth / 2;
+    this.padding = 10;
     this.priceData = null;
     this.container = d3.select('.vis_container'); 
     this.info = this.container.append('div').attr('class', 'info');
     this.svg = this.container.append('svg');
-    this.content = this.svg.append('g').attr('class', 'content');
+    this.content = this.svg.append('g').attr('class', 'content').attr('transform', 'translate(0, ' + (this.padding / 2) + ')');
     this.scaleX = d3.time.scale();
     this.scaleY = d3.scale.linear();
     this.axisX = d3.svg.axis().orient('top').ticks(10);
@@ -76,25 +77,27 @@ class Vis {
       if(err) throw err;
       this.priceData = data;
       // make sample transactions !!!
-      this.transactionData = data.filter(d => Math.random() > 0.98).map(d => {
-        d.type = Math.random() > 0.5 ? 'BUY' : 'SELL';
-        return d;
-      }); 
+      // this.transactionData = data.filter(d => Math.random() > 0.98).map(d => {
+      //   d.type = Math.random() > 0.5 ? 'BUY' : 'SELL';
+      //   return d;
+      // }); 
       this.currentPrice = data[0].price;
       cb(data);
     });
   }
 
   initGraph(data) {
-    this.line = this.content.append('path')
+    this.linecontainer = this.content.append('g');
+    this.line = this.linecontainer.append('path')
                             .attr('fill', 'none')
                             .attr('stroke-width', 4)
+                            .attr('linecap', 'round')
                             .attr('stroke', 'white')
                             .attr('class', 'line');
   }
 
   initTransactionMarkers() {
-    this.transactionMarkers = this.content.selectAll('.transactionmarker');
+    this.transactionMarkers = this.linecontainer.selectAll('.transactionmarker');
   }
 
   updatetransactionMarkers() {
@@ -104,8 +107,10 @@ class Vis {
 
     join.enter()
         .append('circle')
-        .attr('r', '5')
-        .attr('fill', 'red');
+        .attr('r', '10')
+        .attr('fill', (d) => {
+          return d.type === 'BUY' ? 'rgb(255, 180, 0)' : 'rgb(0, 180, 200)';
+        });
 
     join
         .attr('cx', (d) => this.scaleX(d.date))
@@ -119,7 +124,6 @@ class Vis {
     this.loadData((data) => {
       this.initGraph();
       this.initTransactionMarkers();
-      
       this.initInfoMarker();
       this.initInfo();
       this.resizeGraph();
@@ -131,40 +135,38 @@ class Vis {
 
   resizeGraph() {
     this.width = window.innerWidth;
-    this.height = window.innerWidth / 2;
+    this.height = (window.innerWidth / 2) - this.padding;
 
     this.svg.attr('width', this.width).attr('height', this.height);
   }
 
   getDataCrop(data) {
 
-    let endTime = new Date(this.currentTime);
-    endTime.setFullYear(endTime.getFullYear() + 10);
+    let leftTime = new Date(this.currentTime);
+    leftTime.setFullYear(leftTime.getFullYear() - 10);
     
     return data.filter(d => {
-      return d.date >= this.currentTime && d.date <= endTime;
+      return d.date >= leftTime && d.date <= this.currentTime;
     });
 
-    //return data;
-  
   }
 
   updateInfoMarker() {
     this.infoMarker.attr({
-      width: 100,
+      width: 20,
       height: this.height,
-      x: this.width - 100,
+      x: this.width - 20,
       y: 0,
     });
   }
 
   initInfoMarker() {
     this.infoMarker = this.content.append('rect').attr({
-      width: 100,
+      width: 20,
       height: this.height,
-      x: this.width - 100,
+      x: this.width - 20,
       y: 0,
-      fill: '#000', 
+      fill: 'white', 
       opacity: 0.5
     });
   }
@@ -196,7 +198,10 @@ class Vis {
   update() {
 
     let newTime = new Date(this.currentTime);
-    newTime.setMonth(newTime.getMonth() + 1);
+    
+    newTime.setDate(newTime.getDate() + 15);
+
+    //newTime.setMonth(newTime.getMonth() + 1);
     this.currentTime = newTime;
     if(this.currentTime >= this.finalTime) {
       this.playing = false;
@@ -250,7 +255,7 @@ class Vis {
   updateGraph() {
 
     let data = this.getDataCrop(this.priceData);
-    this.currentPrice = data[0].price;
+    this.currentPrice = data[data.length - 1].price;
     
     //console.log(data);
 
@@ -268,7 +273,6 @@ class Vis {
     this.lineGenerator.x((d) => { return this.scaleX(d.date); })
                       .y((d) => { return this.scaleY(d.price); });
 
-
     this.line.datum(data);
 
     let timeTick = new Date(this.currentTime);
@@ -278,11 +282,14 @@ class Vis {
     timeOffset.setYear(timeOffset.getFullYear() + 10);
 
     this.line
+        // .transition()
         .attr('d', this.lineGenerator);
 
-    // this.content
-    //     .attr('transform', null)
-    //     .attr('transform', 'translate(' + 0.01 + ')');
+    // this.linecontainer
+    //     .attr('transform', 'translate(' + 0 + ', ' + '0)');
+
+        
+        
 
   }
 

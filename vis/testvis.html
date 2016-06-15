@@ -10,11 +10,23 @@
     window.onload = () => {
       var vis = new Vis();
       vis.init();
-   
+
+      var buying = false;
 
       document.getElementById('button').onclick = () => {
         if(vis.playing) vis.stop();
         else vis.play();
+      }
+
+      document.getElementById('button2').onclick = () => {
+        if(buying) {
+          vis.sell();
+          buying = false;
+        }
+        else {
+          vis.buy();
+          buying = true;
+        }
       }
 
     };
@@ -28,5 +40,6 @@
 <body>
    <div class="vis_container"></div>
    <button id="button">Continue</button>
+   <button id="button2">BUY/SELL</button>
 </body>
 </html>
