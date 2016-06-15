@@ -1,0 +1,23 @@
+
+    body {
+      background: black;
+      color: white;
+    }
+
+    
+    svg {
+      -webkit-user-select: none;  
+       -moz-user-select: none;     
+       -ms-user-select: none;      
+       user-select: none;   
+    }
+
+    .axis-y path {
+      stroke: white;
+    }
+
+    .axis-y text {
+      fill: white;
+      font-size: 12px;
+    }
+    
