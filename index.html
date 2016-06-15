@@ -6,28 +6,27 @@
   <title>Oil Newsgame</title>
   <link rel="stylesheet" type="text/css" href="ui/css/styles.css">
   <link rel="stylesheet" type="text/css" href="vis/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300,700">
 
 </head>
 <body>
   <div id="esi-vis">
     <!-- Init container -->
-    <div class="init_container container">
+    <div class="init_container container no_scroll">
       <h1>Welcome to the world of oil</h1>
-      <h3>Its 1960, world hits a static stage of oil price</h3>
       <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
-      <button class="control change_view button" data-show=".help_container" data-hide=".init_container">Enter the world of oil</button>
+      <button class="control change_view button" data-show=".help_container" data-hide=".init_container"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Next</div></button>
     </div>
 
     <!-- Help container -->
-    <div class="help_container container">
-      <h1>Increase your assets in the oil market</h1>
-      <h3>Buy when it's cheap, sell when price is high</h3>
-      <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
-      <button class="control change_view button init_game" data-show=".game_container" data-hide=".help_container">Ok! I'm ready</button>
+    <div class="help_container container no_scroll">
+      <h1>Increace your assets in the oil market</h1>
+      <p>Buy and sell oil to make money. Make your decisions based on major world events, and how they effect the oil price.</p>
+      <button class="control change_view button init_game" data-show=".game_container" data-hide=".help_container"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Start the game</div></button>
     </div>
 
     <!-- Game container -->
-    <div class="game_container container">
+    <div class="game_container container no_scroll">
       <div class="counter_container">
         <div class="counter"></div>
       </div>
@@ -47,7 +46,12 @@
 
     <!-- Result container -->
     <div class="result_container container">
-        
+      <div class="result_wrapper"></div>
+      <div class="submit_wrapper">
+        <label><div><input type="text" class="nickname" placeholder="Your nickname" /></div></label>
+        <button class="control button submit"><div><img src="" class="button_img" /></div><div class="button_text">Submit score</div></button>
+      </div>
+      <div class="highscores_wrapper"></div>
     </div>
   </div>
   <script type="text/javascript" src="ui/js/libs/jquery.min.js"></script>

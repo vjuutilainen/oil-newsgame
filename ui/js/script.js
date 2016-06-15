@@ -76,7 +76,7 @@
       }
     },
     printResult: function () {
-      var container = $('.result_container', esivis).empty();
+      var container = $('.result_wrapper', esivis).empty();
       if (yleApp.var.asset > 100) {
         var text = 'You gained assets';
       }
@@ -87,15 +87,16 @@
         var text = 'You broke even';
       }
       yleApp.var.highscore.push(yleApp.var.asset);
+      yleApp.var.highscore.sort();
       $('<h1>' + text + '</h1>').appendTo(container);
       $('<h3>You started with 100 and you got ' + parseInt(yleApp.var.asset) + '.</h3>').appendTo(container);
-      $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>').appendTo(container);
-      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container">Play again</button>').appendTo(container);
-      if (yleApp.var.highscore.length > 1) {
-        $.each(yleApp.var.highscore, function (i, highscore) {
-          $('<div>Round ' + (i + 1) + ': ' + parseInt(highscore) + '</div>').appendTo(container);
-        });
-      }
+      $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
+      $('<h3>Top scores</h3>').appendTo(container);
+      var list_container = $('<ol></ol>').appendTo(container);
+      $.each(yleApp.var.highscore, function (i, highscore) {
+        $('<li>' + parseInt(highscore) + '</li>').appendTo(list_container);
+      });
+      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div><img src="" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.game_container', esivis).fadeOut(500);
       $('.result_container', esivis).fadeIn(500);
     },
@@ -113,14 +114,49 @@
         if (value === 2) {
           $('.controls_container .control', esivis).fadeIn(500);
         }
-        if (value === 0) {
+        if (value === 1) {
           clearInterval(interval);
+          $('.counter', esivis).text(value - 1);
           $('.counter_container', esivis).fadeOut(700);
         }
         else {
           $('.counter', esivis).text(value - 1);
         }
       }, 1000);
+    },
+    getHighScores: function (update) {
+      var get_parameter = (update === true) ? Date.now() / 1000 | 0 : '';
+      $.ajax({
+        dataType:'json',
+        statusCode:{
+          200: function (data) {
+            yleApp.printHighScores(data);
+          }
+        },
+        url:'/php/get.php?timestamp=' + get_parameter,
+        type:'GET'
+      });
+    },
+    printHighScores: function (data) {
+      var container = $('.highscores_wrapper', esivis).empty();
+      $('<h3>All time high</h3>').appendTo(container);
+      var list_container = $('<ol></ol>').appendTo(container);
+      $.each(data, function (i, highscore) {
+        $('<li>' + highscore.nickname + ': ' + parseInt(highscore.score) + '</li>').appendTo(list_container);
+      });
+    },
+    postHighscore: function (data) {
+      $.ajax({
+        data:data,
+        dataType:'json',
+        statusCode:{
+          200: function (data) {
+            yleApp.getHighScores(true);
+          }
+        },
+        url:'/php/post.php',
+        type:'POST'
+      });
     },
     initEvents: function () {
       $(window).resize(function () {
@@ -139,7 +175,6 @@
       esivis.on('click', '.play_again', function (event) {
         yleApp.destroy();
         yleApp.counter();
-
       });
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {
@@ -153,11 +188,22 @@
         $(this).removeClass('sell').addClass('buy').text('buy');
         event.preventDefault();
       });
+      esivis.on('click', '.submit', function (event) {
+        yleApp.postHighscore({
+          nickname:($('.nickname', esivis).val() === '') ? 'Anonymous' : $('.nickname', esivis).val(),
+          score:yleApp.var.highscore.sort()[0]
+        });
+        $(this).prop('disabled', true).addClass('disabled');
+        $(this).find('.button_text').text('Thank you!');
+      });
     },
     destroy: function  (argument) {
       yleApp.var.asset = 100;
       yleApp.var.eventIndex = 0;
       yleApp.var.lastPrice = false;
+      $('.container', esivis).scrollTop(0);
+      $('.submit', esivis).prop('disabled', false).removeClass('disabled');
+      $('.submit', esivis).find('.button_text').text('Submit score');
       $('.asset_value', esivis).text(yleApp.var.asset);
       $('.log_container', esivis).empty();
     },
@@ -167,6 +213,7 @@
       yleApp.destroy();
       yleApp.initEvents();
       yleApp.fixHeights();
+      yleApp.getHighScores();
       new Vis().init();
     }
   };
