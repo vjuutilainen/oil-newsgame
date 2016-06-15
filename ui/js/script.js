@@ -12,20 +12,6 @@
     roundNr: function (x, d) {
       return parseFloat(x.toFixed(d));
     },
-    setPath: function () {
-      if (location.href.match('http://yle.fi/plus/yle')) {
-        yleApp.path = 'http://yle.fi/plus/yle/2016/' + yleApp.projectName + '/';
-      }
-      else if (location.href.match('http://dev.yle.fi')) {
-        yleApp.path = '2016/' + yleApp.projectName + '/';
-      }
-      else if (location.href.match('yle.fi')) {
-        yleApp.path = 'http://yle.fi/plus/2016/' + yleApp.projectName + '/';
-      }
-      else {
-        yleApp.path = '2016/' + yleApp.projectName + '/';
-      }
-    },
     getScale: function () {
       var width = esivis.width();
       if (width >= 578) {
@@ -66,7 +52,6 @@
     },
     init: function () {
       yleApp.projectName = 'oil-newsgame';
-      yleApp.setPath();
       yleApp.getScale();
       yleApp.initMediaUrls();
       yleApp.initEvents();

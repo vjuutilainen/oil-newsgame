@@ -1,7 +1,41 @@
 @import 'libs/prefixer.less';
-#esi-vis {
+.container {
   /* For old browsers */
   display: block;
+  height: 100%;
+  // Result container.
+  .result_container {
+    font-size: 40px;
+    text-align: center;
+    width: 100%;
+  }
+
+  // Vis container.
+  .vis_container {
+
+  }
+
+  // Controls container.
+  .controls_container {
+    .control {
+      background-color: #ccc;
+      border: 1px solid #000;
+      bottom: 0;
+      font-size: 20px;
+      height: 70px;
+      line-height: 70px;
+      position: absolute;
+      text-align: center;
+      vertical-align: middle;
+      width: 90px;
+      &.sell {
+        left: 0;
+      }
+      &.buy {
+        right: 0;
+      }
+    }
+  }
 
   /* General styles */
   .clearfix {
