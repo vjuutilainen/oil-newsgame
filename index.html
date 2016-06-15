@@ -13,7 +13,7 @@
       <h1>Welcome to the world of oil</h1>
       <h3>Its 1960, world hits a static stage of oil price</h3>
       <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
-      <button class="control start button" data-show=".help_container" data-hide=".init_container">Enter the world of oil</button>
+      <button class="control change_view button" data-show=".help_container" data-hide=".init_container">Enter the world of oil</button>
     </div>
 
     <!-- Help container -->
@@ -21,15 +21,17 @@
       <h1>Increase your assets in the oil market</h1>
       <h3>Buy when it's cheap, sell when price is high</h3>
       <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
-      <button class="control start button" data-show=".game_container" data-hide=".help_container">Ok! I'm ready</button>
+      <button class="control change_view button init_game" data-show=".game_container" data-hide=".help_container">Ok! I'm ready</button>
     </div>
 
     <!-- Game container -->
     <div class="game_container container">
-      <div class="counter"></div>
-      <!-- Result container -->
-      <div class="result_container">
-        <h1><span class="result_text">Profit <span class="result_value"></span> <span class="price_value"></span></span></h1>
+      <div class="counter_container">
+        <div class="counter"></div>
+      </div>
+      <!-- Asset container -->
+      <div class="asset_container">
+        <h1><span class="asset_text">Profit <span class="asset_value"></span></span></h1>
         <div class="log_container debug"></div>
       </div>
       <!-- Vis container -->
@@ -39,6 +41,11 @@
       <div class="controls_container">
         <button class="control buy">Buy</button>
       </div>
+    </div>
+
+    <!-- Result container -->
+    <div class="result_container container">
+        
     </div>
   </div>
   <script type="text/javascript" src="ui/js/libs/jquery.min.js"></script>

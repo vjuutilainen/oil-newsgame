@@ -28,8 +28,32 @@ html,body {
   // Game container.
   &.game_container {
     display: none;
+    .counter_container {
+      background-color: rgba(255, 255, 255, 0);
+      height: 100%;
+      margin-top: -50px;
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      z-index: 2;
+      .counter {
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 100px;
+        color: #fff;
+        font-size: 50px;
+        height: 100px;
+        left: 50%;
+        line-height: 100px;
+        margin-left: -50px;
+        position: relative;
+        text-align: center;
+        vertical-align: middle;
+        width: 100px;
+      }
+    }
     // Result container.
-    .result_container {
+    .asset_container {
+      display: none;
       width: 100%;
       h1 {
         background-color: #fff;
@@ -46,6 +70,7 @@ html,body {
 
     // Vis container.
     .vis_container {
+      display: none;
       background-color: #fff;
       border: 1px solid #fff;
       box-sizing: border-box;
@@ -59,14 +84,15 @@ html,body {
         background-color: #fff;
         border: 0;
         bottom: 0;
+        display: none;
         font-size: 20px;
         height: 70px;
         line-height: 70px;
+        outline: none;
         position: absolute;
         text-align: center;
         vertical-align: middle;
         width: 90px;
-        outline: none;
         &.sell {
           left: 0;
         }
@@ -75,6 +101,9 @@ html,body {
         }
       }
     }
+  }
+  .result_container {
+    display: none;
   }
 
   /* General styles */
