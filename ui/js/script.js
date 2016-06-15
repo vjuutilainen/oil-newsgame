@@ -36,7 +36,7 @@
         easing: ease == undefined ? 'swing' : ease,
         step: function () {
           element.text(Math.floor(this.value));
-          element.text(element.text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1 '));
+          element.text(element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
         },
         complete: function () {
           if (parseInt(element.text()) !== stop) {
@@ -47,21 +47,26 @@
       });
     },
     getCurrentPrice: function () {
-      $('.price_value', esivis).text(yleApp.getRandomInt(50, 150));
-      return yleApp.getRandomInt(50, 150);
+      var price = yleApp.getRandomInt(50, 150)
+      return price;
     },
     calculateAsset: function (action) {
       // First action.
+      var current_price = yleApp.getCurrentPrice();
       if (yleApp.var.lastPrice === false) {
-        yleApp.var.lastPrice = yleApp.getCurrentPrice();
+        yleApp.var.lastPrice = current_price;
+        $('<div class="log">First bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
       }
       else {
         if (action === 'sell') {
-          yleApp.var.asset = (yleApp.var.lastPrice / yleApp.getCurrentPrice()) * yleApp.var.asset;
+          yleApp.var.asset = yleApp.var.asset * (((current_price / yleApp.var.lastPrice) - 1)) + yleApp.var.asset;
+          $('<div class="log">Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
         else if (action === 'buy') {
-          yleApp.var.asset = (yleApp.getCurrentPrice() / yleApp.var.lastPrice) * yleApp.var.asset;
+          // yleApp.var.asset = (yleApp.var.lastPrice / current_price) * yleApp.var.asset;
+          $('<div class="log">Bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
+        yleApp.var.lastPrice = current_price;
         return parseInt(yleApp.var.asset);
       }
     },
