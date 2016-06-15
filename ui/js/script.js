@@ -24,6 +24,21 @@
         return false;
       }
     },
+    setPath: function () {
+      if (location.href.match('http://yle.fi/')) {
+        yleApp.path = 'http://yle.fi/plus/oil/';
+        yleApp.php_path = 'http://alpha.yle.fi/plus/alpha/oil/';
+      }
+      else {
+        yleApp.path = '/';
+        yleApp.php_path = '/';
+      }
+    },
+    initMediaUrls: function () {
+      $.each($('.handle_img', esivis), function (i, el) {
+        $(this).attr('src', yleApp.path + '' + $(this).attr('data-src'));
+      });
+    },
     fixHeights: function () {
       $('.container', esivis).height($(window).height());
     },
@@ -98,7 +113,7 @@
       $.each(yleApp.var.highscore, function (i, highscore) {
         $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
-      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
+      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.game_container', esivis).fadeOut(500);
       $('.result_container', esivis).fadeIn(500);
     },
@@ -141,7 +156,7 @@
             yleApp.printHighScores(data);
           }
         },
-        url:'/php/get.php?timestamp=' + get_parameter,
+        url:yleApp.php_path + 'php/get.php?timestamp=' + get_parameter,
         type:'GET'
       });
     },
@@ -162,7 +177,7 @@
             yleApp.getHighScores(true);
           }
         },
-        url:'/php/post.php',
+        url:yleApp.php_path + 'php/post.php',
         type:'POST'
       });
     },
@@ -187,15 +202,15 @@
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {
         yleApp.vis.sell();
-        yleApp.calculateAsset('sell');
-        $(this).removeClass('buy').addClass('sell').html('<div class="button_img_container"><img src="/ui/img/sell.png" class="button_img" /></div><div class="button_text">Sell oil</div>');
+        yleApp.calculateAsset('buy');
+        $(this).removeClass('buy').addClass('sell').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/sell.png" class="button_img" /></div><div class="button_text">Sell oil</div>');
         event.preventDefault();
       });
       // Buy event.
       esivis.on('click', '.control.sell', function (event) {
         yleApp.vis.buy();
         yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
-        $(this).removeClass('sell').addClass('buy').html('<div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div>');
+        $(this).removeClass('sell').addClass('buy').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div>');
         event.preventDefault();
       });
       esivis.on('click', '.submit', function (event) {
@@ -223,8 +238,11 @@
       yleApp.var.highscore = [];
       yleApp.destroy();
       yleApp.initEvents();
+      yleApp.setPath();
+      yleApp.initMediaUrls();
       yleApp.fixHeights();
       yleApp.getHighScores();
+
       new Vis().init(function (vis) {
         yleApp.vis = vis;
       });
