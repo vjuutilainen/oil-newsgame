@@ -10,6 +10,7 @@
       return (x === '') ? 0 : x;
     },
     roundNr: function (x, d) {
+      x = parseFloat(x);
       return parseFloat(x.toFixed(d));
     },
     getScale: function () {
@@ -26,11 +27,8 @@
     fixHeights: function () {
       $('.container', esivis).height($(window).height());
     },
-    getRandomInt: function (min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    },
     initNumbers: function (element, stop, duration, ease) {
-      var start = parseFloat(element.text().replace(/,/g, ''));
+      var start = yleApp.roundNr(element.text(), 1);
       $({value: start}).animate({value: stop}, {
         duration: duration == undefined ? 1000 : duration,
         easing: ease == undefined ? 'swing' : ease,
@@ -44,7 +42,7 @@
           } 
         },
         complete: function () {
-          if (parseFloat(element.text()) !== stop) {
+          if (yleApp.roundNr(element.text(), 1) !== stop) {
             element.text(yleApp.roundNr(stop, 1));
             if (stop > 0) {
               element.text('' + element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
@@ -71,14 +69,15 @@
       // Rest of the actions.
       else {
         if (action === 'sell') {
-          console.log('Bought: ' + yleApp.var.lastPrice)
-          console.log('Sold: ' + current_price)
-          console.log('Assets: ' + yleApp.var.asset)
+          // console.log('Bought: ' + yleApp.var.lastPrice)
+          // console.log('Sold: ' + current_price)
+          // console.log('Assets: ' + yleApp.var.asset)
+          yleApp.var.asset = yleApp.var.asset * ((current_price / yleApp.var.lastPrice) - 1) + yleApp.var.asset;
+          $('<div>' + yleApp.var.eventIndex + '. Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
           if (yleApp.var.eventIndex > 20) {
+            $('.control', esivis).prop('disabled', true);
             yleApp.printResult();
           }
-          yleApp.var.asset = yleApp.var.asset * (((current_price / yleApp.var.lastPrice) - 1)) + yleApp.var.asset;
-          $('<div>' + yleApp.var.eventIndex + '. Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
         else if (action === 'buy') {
           // yleApp.var.asset = (yleApp.var.lastPrice / current_price) * yleApp.var.asset;
@@ -90,24 +89,14 @@
     },
     printResult: function () {
       var container = $('.result_wrapper', esivis).empty();
-      if (yleApp.var.asset > 100) {
-        var text = 'You gained assets';
-      }
-      else if (yleApp.var.asset < 100) {
-        var text = 'You lost assets';
-      }
-      else {
-        var text = 'You broke even';
-      }
       yleApp.var.highscore.push(yleApp.var.asset);
-      yleApp.var.highscore.sort();
-      $('<h1>' + text + '</h1>').appendTo(container);
-      $('<h3>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h3>').appendTo(container);
+      yleApp.var.highscore.sort().reverse();
+      $('<h1>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(container);
       $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
       $('<h3>Top scores</h3>').appendTo(container);
       var list_container = $('<ol></ol>').appendTo(container);
       $.each(yleApp.var.highscore, function (i, highscore) {
-        $('<li>' + yleApp.roundNr(highscore, 1) + '</li>').appendTo(list_container);
+        $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
       $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.game_container', esivis).fadeOut(500);
@@ -161,7 +150,7 @@
       $('<h3>All time high</h3>').appendTo(container);
       var list_container = $('<ol></ol>').appendTo(container);
       $.each(data, function (i, highscore) {
-        $('<li>' + highscore.nickname + ': ' + yleApp.roundNr(highscore.score, 1) + '</li>').appendTo(list_container);
+        $('<li>' + highscore.nickname + ': ' + yleApp.roundNr(highscore.score, 1) + ' times</li>').appendTo(list_container);
       });
     },
     postHighscore: function (data) {
