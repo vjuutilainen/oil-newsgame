@@ -124,5 +124,5 @@ class Vis {
 }
 
 window.onload = () => {
-  new Vis().init();
+  // new Vis().init();
 };
