@@ -51,20 +51,22 @@
       return price;
     },
     calculateAsset: function (action) {
+      yleApp.var.eventIndex++;
       // First action.
       var current_price = yleApp.getCurrentPrice();
       if (yleApp.var.lastPrice === false) {
         yleApp.var.lastPrice = current_price;
-        $('<div class="log">First bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
+        $('<div>' + yleApp.var.eventIndex + '. First bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
       }
+      // Rest of the actions.
       else {
         if (action === 'sell') {
           yleApp.var.asset = yleApp.var.asset * (((current_price / yleApp.var.lastPrice) - 1)) + yleApp.var.asset;
-          $('<div class="log">Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
+          $('<div>' + yleApp.var.eventIndex + '. Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
         else if (action === 'buy') {
           // yleApp.var.asset = (yleApp.var.lastPrice / current_price) * yleApp.var.asset;
-          $('<div class="log">Bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
+          $('<div>' + yleApp.var.eventIndex + '. Bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
         yleApp.var.lastPrice = current_price;
         return parseInt(yleApp.var.asset);
@@ -85,17 +87,20 @@
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {
         yleApp.initNumbers($('.result_value', esivis), yleApp.calculateAsset('buy'), 1000, 'swing');
+        $(this).removeClass('buy').addClass('sell').text('sell');
         event.preventDefault();
       });
       // Buy event.
       esivis.on('click', '.control.sell', function (event) {
         yleApp.initNumbers($('.result_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
+        $(this).removeClass('sell').addClass('buy').text('buy');
         event.preventDefault();
       });
     },
     init: function () {
       yleApp.var = {};
       yleApp.var.asset = 100;
+      yleApp.var.eventIndex = 0;
       yleApp.var.lastPrice = false;
       yleApp.initEvents();
       yleApp.fixHeights();
