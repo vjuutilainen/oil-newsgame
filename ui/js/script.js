@@ -30,24 +30,34 @@
       return Math.floor(Math.random() * (max - min)) + min;
     },
     initNumbers: function (element, stop, duration, ease) {
-      var start = parseInt(element.text().replace(/,/g, ''));
+      var start = parseFloat(element.text().replace(/,/g, ''));
       $({value: start}).animate({value: stop}, {
         duration: duration == undefined ? 1000 : duration,
         easing: ease == undefined ? 'swing' : ease,
         step: function () {
-          element.text(Math.floor(this.value));
-          element.text(element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
+          element.text(yleApp.roundNr(this.value, 1));
+          if (this.value > 0) {
+            element.text('' + element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
+          }
+          else {
+            element.text(element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
+          } 
         },
         complete: function () {
-          if (parseInt(element.text()) !== stop) {
-            element.text(stop);
-            element.text(element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
+          if (parseFloat(element.text()) !== stop) {
+            element.text(yleApp.roundNr(stop, 1));
+            if (stop > 0) {
+              element.text('' + element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
+            }
+            else {
+              element.text(element.text().replace(/(\d)(?=(\d\d\d) + (?!\d))/g, '$1 '));
+            }
           }
         }
       });
     },
     getCurrentPrice: function () {
-      var price = yleApp.getRandomInt(50, 150)
+      var price = yleApp.vis.getCurrentPrice();
       return price;
     },
     calculateAsset: function (action) {
@@ -61,7 +71,10 @@
       // Rest of the actions.
       else {
         if (action === 'sell') {
-          if (yleApp.var.eventIndex > 5) {
+          console.log('Bought: ' + yleApp.var.lastPrice)
+          console.log('Sold: ' + current_price)
+          console.log('Assets: ' + yleApp.var.asset)
+          if (yleApp.var.eventIndex > 20) {
             yleApp.printResult();
           }
           yleApp.var.asset = yleApp.var.asset * (((current_price / yleApp.var.lastPrice) - 1)) + yleApp.var.asset;
@@ -72,7 +85,7 @@
           $('<div>' + yleApp.var.eventIndex + '. Bought price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
         yleApp.var.lastPrice = current_price;
-        return parseInt(yleApp.var.asset);
+        return yleApp.roundNr(yleApp.var.asset, 1);
       }
     },
     printResult: function () {
@@ -89,40 +102,46 @@
       yleApp.var.highscore.push(yleApp.var.asset);
       yleApp.var.highscore.sort();
       $('<h1>' + text + '</h1>').appendTo(container);
-      $('<h3>You started with 100 and you got ' + parseInt(yleApp.var.asset) + '.</h3>').appendTo(container);
+      $('<h3>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h3>').appendTo(container);
       $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
       $('<h3>Top scores</h3>').appendTo(container);
       var list_container = $('<ol></ol>').appendTo(container);
       $.each(yleApp.var.highscore, function (i, highscore) {
-        $('<li>' + parseInt(highscore) + '</li>').appendTo(list_container);
+        $('<li>' + yleApp.roundNr(highscore, 1) + '</li>').appendTo(list_container);
       });
-      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div><img src="" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
+      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.game_container', esivis).fadeOut(500);
       $('.result_container', esivis).fadeIn(500);
     },
     counter: function () {
-      $('.counter', esivis).text('4');
+      $('.counter', esivis).text('3');
       $('.counter_container', esivis).show();
-      var interval = setInterval(function () {
-        var value = parseInt($('.counter', esivis).text());
-        if (value === 4) {
-          $('.asset_container', esivis).fadeIn(500);
-        }
-        if (value === 3) {
-          $('.vis_container', esivis).fadeIn(500);
-        }
-        if (value === 2) {
-          $('.controls_container .control', esivis).fadeIn(500);
-        }
-        if (value === 1) {
-          clearInterval(interval);
-          $('.counter', esivis).text(value - 1);
-          $('.counter_container', esivis).fadeOut(700);
-        }
-        else {
-          $('.counter', esivis).text(value - 1);
-        }
-      }, 1000);
+      setTimeout(function () {
+        var interval = setInterval(function () {
+          var value = parseInt($('.counter', esivis).text());
+          if (value === 3) {
+            $('.asset_container', esivis).fadeIn(500);
+            $('.counter_text', esivis).text('Are you ready?');
+            $('.counter', esivis).text(value - 1);
+          }
+          else if (value === 2) {
+            $('.vis_container', esivis).fadeIn(500);
+            $('.counter_text', esivis).text('Set!');
+            $('.counter', esivis).text(value - 1);
+          }
+          else if (value === 1) {
+            $('.controls_container .control', esivis).fadeIn(500);
+            $('.counter_text', esivis).text('Go!');
+            $('.counter', esivis).text(value - 1);
+          }
+          else {
+            clearInterval(interval);
+            $('.counter', esivis).text('0');
+            $('.counter_container', esivis).fadeOut(700);
+            yleApp.vis.play();
+          }
+        }, 1500);
+      }, 500);
     },
     getHighScores: function (update) {
       var get_parameter = (update === true) ? Date.now() / 1000 | 0 : '';
@@ -142,7 +161,7 @@
       $('<h3>All time high</h3>').appendTo(container);
       var list_container = $('<ol></ol>').appendTo(container);
       $.each(data, function (i, highscore) {
-        $('<li>' + highscore.nickname + ': ' + parseInt(highscore.score) + '</li>').appendTo(list_container);
+        $('<li>' + highscore.nickname + ': ' + yleApp.roundNr(highscore.score, 1) + '</li>').appendTo(list_container);
       });
     },
     postHighscore: function (data) {
@@ -178,14 +197,16 @@
       });
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {
+        yleApp.vis.sell();
         yleApp.calculateAsset('sell');
-        $(this).removeClass('buy').addClass('sell').text('sell');
+        $(this).removeClass('buy').addClass('sell').html('<div class="button_img_container"><img src="/ui/img/sell.png" class="button_img" /></div><div class="button_text">Sell oil</div>');
         event.preventDefault();
       });
       // Buy event.
       esivis.on('click', '.control.sell', function (event) {
+        yleApp.vis.buy();
         yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
-        $(this).removeClass('sell').addClass('buy').text('buy');
+        $(this).removeClass('sell').addClass('buy').html('<div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div>');
         event.preventDefault();
       });
       esivis.on('click', '.submit', function (event) {
@@ -198,13 +219,14 @@
       });
     },
     destroy: function  (argument) {
-      yleApp.var.asset = 100;
+      yleApp.var.asset = yleApp.roundNr(1, 1);
       yleApp.var.eventIndex = 0;
       yleApp.var.lastPrice = false;
       $('.container', esivis).scrollTop(0);
       $('.submit', esivis).prop('disabled', false).removeClass('disabled');
       $('.submit', esivis).find('.button_text').text('Submit score');
-      $('.asset_value', esivis).text(yleApp.var.asset);
+      $('.asset_value', esivis).text(yleApp.var.asset + '.0');
+      $('.counter_text', esivis).text('On your mark!');
       $('.log_container', esivis).empty();
     },
     init: function () {
@@ -214,7 +236,9 @@
       yleApp.initEvents();
       yleApp.fixHeights();
       yleApp.getHighScores();
-      new Vis().init();
+      new Vis().init(function (vis) {
+        yleApp.vis = vis;
+      });
     }
   };
   $(document).ready(function () {
