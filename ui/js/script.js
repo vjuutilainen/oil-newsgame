@@ -135,7 +135,7 @@
           }
           else if (value === 1) {
             $('.controls_container .control', esivis).fadeIn(500);
-            $('.counter_text', esivis).text('Go!');
+            $('.counter_text', esivis).text('Buy!');
             $('.counter', esivis).text(value - 1);
           }
           else {
@@ -197,6 +197,7 @@
       // Play again.
       esivis.on('click', '.play_again', function (event) {
         yleApp.destroy();
+        yleApp.vis.restart();
         yleApp.counter();
       });
       // Sell event.
