@@ -23,10 +23,11 @@
         return false;
       }
     },
-    initMediaUrls: function () {
-      $.each($('.handle_img', esivis), function (i, el) {
-        $(this).attr('src', yleApp.path + 'img/' + $(this).attr('data-src'));
-      });
+    fixHeights: function () {
+      $('.container', esivis).height($(window).height());
+    },
+    getRandomInt: function (min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
     },
     initNumbers: function (element, stop, duration, ease) {
       var start = parseInt(element.text().replace(/,/g, ''));
@@ -45,16 +46,35 @@
         }
       });
     },
+    calculateAsset: function () {
+
+      return yleApp.getRandomInt(50, 150); 
+    },
     initEvents: function () {
       $(window).resize(function () {
         yleApp.getScale();
       });
+      // Start event.
+      esivis.on('click', '.control.start', function (event) {
+        $('.init_container', esivis).fadeOut(500);
+        $('.game_container', esivis).fadeIn(1000);
+      });
+      // Sell event.
+      esivis.on('click', '.control.buy', function (event) {
+        yleApp.initNumbers($('.result_value', esivis), yleApp.calculateAsset(), 1000, 'swing');
+        event.preventDefault();
+      });
+      // Buy event.
+      esivis.on('click', '.control.sell', function (event) {
+        yleApp.initNumbers($('.result_value', esivis), yleApp.calculateAsset(), 1000, 'swing');
+        event.preventDefault();
+      });
     },
     init: function () {
-      yleApp.projectName = 'oil-newsgame';
-      yleApp.getScale();
-      yleApp.initMediaUrls();
+      yleApp.var = {};
+      yleApp.var.asset = 1;
       yleApp.initEvents();
+      yleApp.fixHeights();
     }
   };
   $(document).ready(function () {
