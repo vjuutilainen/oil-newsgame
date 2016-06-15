@@ -42,13 +42,30 @@
         $(this).attr('src', yleApp.path + 'img/' + $(this).attr('data-src'));
       });
     },
+    initNumbers: function (element, stop, duration, ease) {
+      var start = parseInt(element.text().replace(/,/g, ''));
+      $({value: start}).animate({value: stop}, {
+        duration: duration == undefined ? 1000 : duration,
+        easing: ease == undefined ? 'swing' : ease,
+        step: function () {
+          element.text(Math.floor(this.value));
+          element.text(element.text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1 '));
+        },
+        complete: function () {
+          if (parseInt(element.text()) !== stop) {
+            element.text(stop);
+            element.text(element.text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1 '));
+          }
+        }
+      });
+    },
     initEvents: function () {
       $(window).resize(function () {
         yleApp.getScale();
       });
     },
     init: function () {
-      yleApp.projectName = '';
+      yleApp.projectName = 'oil-newsgame';
       yleApp.setPath();
       yleApp.getScale();
       yleApp.initMediaUrls();
