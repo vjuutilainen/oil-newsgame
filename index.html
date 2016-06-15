@@ -21,6 +21,7 @@
     <div class="help_container container no_scroll">
       <h1>Increace your assets in the oil market</h1>
       <p>Buy and sell oil to make money. Make your decisions based on major world events, and how they effect the oil price.</p>
+      <p>Make your first investment and sell your assets at right time in order to gain profits.</p>
       <button class="control change_view button init_game" data-show=".game_container" data-hide=".help_container"><div class="button_img_container"><img src="" data-src="ui/img/buy.png" class="button_img handle_img" /></div><div class="button_text">Start the game</div></button>
     </div>
 
@@ -45,17 +46,18 @@
       <div class="controls_container">
         <button class="control button buy"><div class="button_img_container"><img src="" data-src="ui/img/buy.png" class="button_img handle_img" /></div><div class="button_text">Buy oil</div></button>
       </div>
+
+      <!-- Result container -->
+      <div class="result_container">
+        <div class="result_wrapper"></div>
+        <div class="submit_wrapper">
+          <label><div><input type="text" class="nickname" placeholder="Your nickname" /></div></label>
+          <button class="button submit"><div class="button_img_container"><img src="" data-src="ui/img/submit.png" class="button_img handle_img" /></div><div class="button_text">Submit score</div></button>
+        </div>
+        <div class="highscores_wrapper"></div>
+      </div>
     </div>
 
-    <!-- Result container -->
-    <div class="result_container container">
-      <div class="result_wrapper"></div>
-      <div class="submit_wrapper">
-        <label><div><input type="text" class="nickname" placeholder="Your nickname" /></div></label>
-        <button class="button submit"><div class="button_img_container"><img src="" data-src="ui/img/submit.png" class="button_img handle_img" /></div><div class="button_text">Submit score</div></button>
-      </div>
-      <div class="highscores_wrapper"></div>
-    </div>
   </div>
   <script type="text/javascript" src="ui/js/libs/jquery.min.js"></script>
   <script type="text/javascript" src="ui/js/script.js"></script>
