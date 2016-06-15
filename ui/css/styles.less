@@ -2,8 +2,9 @@
 html,body {
   background-color: #000;
   color: #fff;
-  margin: 0;
+  font-family: 'Open Sans', arial;
   padding: 0;
+  margin: 0;
 }
 .container {
   /* For old browsers */
@@ -12,41 +13,52 @@ html,body {
   h1,
   h3,
   p {
-    padding: 0 10px;
+    padding: 0 20px;
     margin: 0 0 15px 0;
   }
   h1 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  p {
+    color: #828282;
+    font-family: 300;
+    font-style: 20px;
   }
   // Init container.
   &.init_container {
     display: block;
+    h1 {
+      margin-top: 10px;
+    }
   }
   // Help container.
   &.help_container {
     display: none;
+    h1 {
+      margin-top: 10px;
+    }
   }
   // Game container.
   &.game_container {
     display: none;
     .counter_container {
-      background-color: rgba(255, 255, 255, 0);
+      background-color: rgba(0, 0, 0, 0.7);
       height: 100%;
-      margin-top: -50px;
       position: absolute;
-      top: 50%;
       width: 100%;
       z-index: 2;
       .counter {
-        background-color: rgba(0, 0, 0, 0.7);
-        border-radius: 100px;
-        color: #fff;
-        font-size: 50px;
+        color: #828282;
+        font-size: 150px;
         height: 100px;
         left: 50%;
         line-height: 100px;
         margin-left: -50px;
+        margin-top: -50px;
         position: relative;
         text-align: center;
+        top: 50%;
         vertical-align: middle;
         width: 100px;
       }
@@ -92,7 +104,7 @@ html,body {
         position: absolute;
         text-align: center;
         vertical-align: middle;
-        width: 90px;
+        width: 100%;
         &.sell {
           left: 0;
         }
@@ -102,8 +114,15 @@ html,body {
       }
     }
   }
-  .result_container {
+  &.result_container {
     display: none;
+    input {
+      margin: 2px 0;
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      outline: none
+    }
   }
 
   /* General styles */
@@ -118,12 +137,23 @@ html,body {
     }
   }
   .button {
-    background-color: #fff;
-    border: 0;
-    font-size: 20px;
-    height: 50px;
-    outline: none;
+    text-align: center;
     width: 100%;
+    outline: none;
+    .button_img_container {
+      margin-bottom: 10px;
+      .button_img {
+        width: 80px;
+        height: 80px;
+      }
+      
+    }
+    .button_text {
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 14px;
+    }
   }
   .clear_both {
     clear: both;
@@ -136,5 +166,8 @@ html,body {
   }
   .debug {
     display: block;
+  }
+  .no_scroll {
+    overflow: hidden;
   }
 }
