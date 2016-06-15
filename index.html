@@ -4,17 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <title>Oil Newsgame</title>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300,700">
   <link rel="stylesheet" type="text/css" href="ui/css/styles.css">
   <link rel="stylesheet" type="text/css" href="vis/css/styles.css">
-  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300,700">
-
 </head>
 <body>
   <div id="esi-vis">
     <!-- Init container -->
     <div class="init_container container no_scroll">
       <h1>Welcome to the world of oil</h1>
-      <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
+      <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>
       <button class="control change_view button" data-show=".help_container" data-hide=".init_container"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Next</div></button>
     </div>
 
@@ -29,10 +28,14 @@
     <div class="game_container container no_scroll">
       <div class="counter_container">
         <div class="counter"></div>
+        <div class="counter_text"></div>
       </div>
       <!-- Asset container -->
       <div class="asset_container">
-        <h1><span class="asset_text">Profit <span class="asset_value"></span></span></h1>
+        <h1>
+          <div class="asset_text">How area your assets doing</div>
+          <div class="asset_value"></div>
+        </h1>
         <div class="log_container debug"></div>
       </div>
       <!-- Vis container -->
@@ -40,7 +43,7 @@
 
       <!-- Controls container -->
       <div class="controls_container">
-        <button class="control buy">Buy</button>
+        <button class="control button buy"><div class="button_img_container"><img src="/ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div></button>
       </div>
     </div>
 
@@ -49,7 +52,7 @@
       <div class="result_wrapper"></div>
       <div class="submit_wrapper">
         <label><div><input type="text" class="nickname" placeholder="Your nickname" /></div></label>
-        <button class="control button submit"><div><img src="" class="button_img" /></div><div class="button_text">Submit score</div></button>
+        <button class="button submit"><div class="button_img_container"><img src="/ui/img/submit.png" class="button_img" /></div><div class="button_text">Submit score</div></button>
       </div>
       <div class="highscores_wrapper"></div>
     </div>
