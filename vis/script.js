@@ -1,6 +1,13 @@
 'use strict';
 
+let visPath = '/';
+
+if(location.href.match('http://yle.fi/')) {
+  visPath = 'http://yle.fi/plus/oil/';
+}
+
 const formatDate = d3.time.format('%YM%m');
+const formatDateYear = d3.time.format('%Y');
 
 const events = {
   '1960M01': { title: 'Something here 1' },
@@ -37,7 +44,8 @@ class Vis {
   constructor() {
     this.width = window.innerWidth;
     this.height = window.innerWidth / 2;
-    this.padding = 20;
+    this.padding = 40;
+    this.leftPadding = 20;
     this.priceData = null;
     this.container = d3.select('.vis_container'); 
     this.info = this.container.append('div').attr('class', 'info');
@@ -65,28 +73,20 @@ class Vis {
       this.updateGraph();
       this.updateInfoMarker();
       this.updatetransactionMarkers();
-      
-
-      //this.updateMarkers();
     };
 
   }
 
   loadData(cb) {
-    d3.csv('vis/data/oil.csv', this.transformData, (err, data) => {
+    d3.csv(visPath + 'vis/data/oil.csv', this.transformPriceData, (err, data) => {
       if(err) throw err;
-
       this.priceData = data;
-
-      console.log(data);
-
-      // make sample transactions !!!
-      // this.transactionData = data.filter(d => Math.random() > 0.98).map(d => {
-      //   d.type = Math.random() > 0.5 ? 'BUY' : 'SELL';
-      //   return d;
-      // }); 
       this.currentPrice = data[0].price;
-      cb(data);
+      d3.csv(visPath + 'vis/data/events.csv', this.transformEventData, (err, data) => {
+        if(err) throw err;
+        this.eventData = data;
+        cb(data);
+      });
     });
   }
 
@@ -139,7 +139,8 @@ class Vis {
 
   resizeGraph() {
     this.width = window.innerWidth;
-    this.height = (window.innerWidth / 2) - this.padding;
+    this.height = window.innerWidth / 2;
+    this.innerHeight = this.height - (this.padding * 2); 
 
     this.svg.attr('width', this.width).attr('height', this.height);
   }
@@ -157,18 +158,18 @@ class Vis {
 
   updateInfoMarker() {
     this.infoMarker.attr({
-      width: 20,
+      width: 10,
       height: this.height,
-      x: this.width - 20,
+      x: this.width - 10,
       y: 0,
     });
   }
 
   initInfoMarker() {
     this.infoMarker = this.content.append('rect').attr({
-      width: 20,
+      width: 10,
       height: this.height,
-      x: this.width - 20,
+      x: this.width - 10,
       y: 0,
       fill: 'white', 
       opacity: 0.5
@@ -177,25 +178,26 @@ class Vis {
 
   initInfo() {
 
-    let html = '<h3>Year ' + this.currentTime.getFullYear() + '</h3>' +
-               '<h3>Price ' + this.currentPrice + '</h3>';
+    // other intro? !!!
+    let html = '';
+               
 
     this.info.html(html);
 
   }
 
   updateInfo() {
-    //let identifier = this.currentTime.getFullYear() + 'M' + (this.currentTime.getMonth() + 1);
-    //console.log(identifier);
-    //if(events[identifier]) {
-      let html = 
-                 '<h3>Year ' + this.currentTime.getFullYear() + ' M' + (this.currentTime.getMonth() + 1)  + '</h3>' +
-                 '<h3>Price ' + this.currentPrice + '</h3>';
-      this.info.html(html);
-    //}
-    //else {
-      //info.attr('opacity')
-    //}
+    
+    let event = this.eventData.reduce((prev, curr) => {
+      return curr.date <= this.currentTime ? curr : prev;
+    }, this.eventData[0]);
+    
+    
+    // ' M' + (this.currentTime.getMonth() + 1)  +
+    let html = '<h4>Year ' + this.currentTime.getFullYear() + ', Price ' + this.currentPrice.toFixed(2).replace('.', ',') + '</h4>' +
+                '<h3>' + event.title + '</h3>';
+               
+    this.info.html(html);
     
   }
 
@@ -203,18 +205,24 @@ class Vis {
 
     let newTime = new Date(this.currentTime);
     
-    newTime.setDate(newTime.getDate() + 15);
+    newTime.setDate(newTime.getDate() + 10);
 
     //newTime.setMonth(newTime.getMonth() + 1);
     this.currentTime = newTime;
-    if(this.currentTime >= this.finalTime) {
+    if(this.currentTime > this.finalTime) {
       this.playing = false;
       this.currentTime = this.finalTime;
+      this.initInfo();
+      this.end();
+    }
+    else {
+      this.updateInfo();
+      this.updatetransactionMarkers();
+      this.updateGraph();
     }
 
-    this.updateGraph();
-    this.updateInfo();
-    this.updatetransactionMarkers();
+    
+    
 
   }
 
@@ -230,6 +238,44 @@ class Vis {
     };
 
     requestAnimationFrame(tick);
+  }
+
+
+
+  end() {
+
+    let data = this.priceData.filter(d => d.date >= this.beginTime);
+
+    this.scaleX.domain(d3.extent(data, (d) => d.date ));
+    this.scaleY.domain([0, d3.extent(data, (d) => d.price )[1]]);
+
+    this.scaleX.range([0, this.width - this.leftPadding]);
+    this.scaleY.range([this.innerHeight, 0]);
+    this.axisX.scale(this.scaleX);
+    this.axisY.scale(this.scaleY);
+
+    this.axisGroupX.call(this.axisX);
+    this.axisGroupY.call(this.axisY);
+
+    this.lineGenerator.x((d) => { return this.scaleX(d.date); })
+                      .y((d) => { return this.scaleY(d.price); });
+
+    this.line.datum(data);
+
+    this.line
+        .attr('stroke-width', 1)
+        .attr('d', this.lineGenerator);
+
+    this.updatetransactionMarkers();
+
+  }
+
+  restart() {
+    this.currentTime = this.beginTime;
+    this.transactionData = [];
+    this.updateGraph();
+    this.initInfo();
+    this.updatetransactionMarkers();
   }
 
   buy() {
@@ -260,14 +306,12 @@ class Vis {
 
     let data = this.getDataCrop(this.priceData);
     this.currentPrice = data[data.length - 1].price;
-    
-    //console.log(data);
 
     this.scaleX.domain(d3.extent(data, (d) => d.date ));
     this.scaleY.domain(d3.extent(data, (d) => d.price ));
 
-    this.scaleX.range([0, this.width]);
-    this.scaleY.range([this.height, 0]);
+    this.scaleX.range([0, this.width - this.leftPadding]);
+    this.scaleY.range([this.innerHeight, 0]);
     this.axisX.scale(this.scaleX);
     this.axisY.scale(this.scaleY);
 
@@ -286,6 +330,7 @@ class Vis {
     timeOffset.setYear(timeOffset.getFullYear() + 10);
 
     this.line
+        .attr('stroke-width', 4)
         .attr('d', this.lineGenerator);
 
     // this.linecontainer
@@ -296,9 +341,14 @@ class Vis {
 
   }
 
-  transformData(d) {
+  transformPriceData(d) {
     d.date = formatDate.parse(d.time);
     d.price = +d.crude_petro_usd_bbl;
+    return d;
+  }
+
+  transformEventData(d) {
+    d.date = formatDateYear.parse(d.year);
     return d;
   }
 
