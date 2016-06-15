@@ -7,8 +7,11 @@ html,body {
   margin: 0;
 }
 .container {
+  margin: auto auto;
+  max-width: 600px;
   /* For old browsers */
   display: block;
+  position: relative;
   height: 100%;
   h1,
   h3,
@@ -106,10 +109,12 @@ html,body {
 
     // Vis container.
     .vis_container {
-      border: 1px solid #fff;
       box-sizing: border-box;
       display: none;
       width: 100%;
+      svg {
+        width: 100% !important;
+      }
     }
 
     // Controls container.
@@ -121,7 +126,8 @@ html,body {
   }
   &.result_container {
     display: none;
-    ol {
+    h1 {
+      padding-top: 10px;
     }
     input {
       background-color: #000;
