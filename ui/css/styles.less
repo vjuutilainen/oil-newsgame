@@ -17,17 +17,15 @@ html,body {
   }
   h1 {
   }
+  // Init container.
   &.init_container {
     display: block;
-    .control {
-      background-color: #fff;
-      border: 0;
-      font-size: 20px;
-      height: 50px;
-      outline: none;
-      width: 100%;
-    }
   }
+  // Help container.
+  &.help_container {
+    display: none;
+  }
+  // Game container.
   &.game_container {
     display: none;
     // Result container.
@@ -89,6 +87,14 @@ html,body {
       height: 0;
       visibility: hidden;
     }
+  }
+  .button {
+    background-color: #fff;
+    border: 0;
+    font-size: 20px;
+    height: 50px;
+    outline: none;
+    width: 100%;
   }
   .clear_both {
     clear: both;

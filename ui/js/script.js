@@ -81,8 +81,8 @@
       });
       // Start event.
       esivis.on('click', '.control.start', function (event) {
-        $('.init_container', esivis).fadeOut(500);
-        $('.game_container', esivis).fadeIn(1000);
+        $($(this).data('hide'), esivis).fadeOut(500);
+        $($(this).data('show'), esivis).fadeIn(1000);
       });
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {

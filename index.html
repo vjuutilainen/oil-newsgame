@@ -13,12 +13,21 @@
       <h1>Welcome to the world of oil</h1>
       <h3>Its 1960, world hits a static stage of oil price</h3>
       <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
-      <button class="control start">Enter the world of oil</button>
+      <button class="control start button" data-show=".help_container" data-hide=".init_container">Enter the world of oil</button>
+    </div>
+
+    <!-- Help container -->
+    <div class="help_container container">
+      <h1>Increase your assets in the oil market</h1>
+      <h3>Buy when it's cheap, sell when price is high</h3>
+      <p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod. Aliquam ligula turpis, finibus quis porttitor eu, laoreet et quam. Sed lectus nibh, hendrerit quis orci ac, rutrum suscipit ex. Quisque faucibus leo sit amet varius blandit. Nunc sed fermentum dolor, vitae hendrerit felis. In ac pulvinar nisi.</p>
+      <button class="control start button" data-show=".game_container" data-hide=".help_container">Ok! I'm ready</button>
     </div>
 
     <!-- Game container -->
     <div class="game_container container">
-    <!-- Result container -->
+      <div class="counter"></div>
+      <!-- Result container -->
       <div class="result_container">
         <h1><span class="result_text">Profit <span class="result_value"></span> <span class="price_value"></span></span></h1>
         <div class="log_container debug"></div>
