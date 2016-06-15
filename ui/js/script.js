@@ -114,10 +114,10 @@
         $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
       $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
-      $('.game_container', esivis).fadeOut(500);
+      $('.controls_container', esivis).hide();
       $('.result_container', esivis).fadeIn(500);
     },
-    counter: function () {
+    counter: function (restart) {
       $('.counter', esivis).text('3');
       $('.counter_container', esivis).show();
       setTimeout(function () {
@@ -135,14 +135,19 @@
           }
           else if (value === 1) {
             $('.controls_container .control', esivis).fadeIn(500);
-            $('.counter_text', esivis).text('Go!');
+            $('.counter_text', esivis).text('Buy!');
             $('.counter', esivis).text(value - 1);
           }
           else {
             clearInterval(interval);
             $('.counter', esivis).text('0');
             $('.counter_container', esivis).fadeOut(700);
-            yleApp.vis.play();
+            if (restart === true) {
+              yleApp.vis.restart();
+            }
+            else {
+              yleApp.vis.play();
+            }
           }
         }, 1500);
       }, 500);
@@ -192,12 +197,12 @@
       });
       // Init game.
       esivis.on('click', '.init_game', function (event) {
-        yleApp.counter();
+        yleApp.counter(false);
       });
       // Play again.
       esivis.on('click', '.play_again', function (event) {
         yleApp.destroy();
-        yleApp.counter();
+        yleApp.counter(true);
       });
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {
