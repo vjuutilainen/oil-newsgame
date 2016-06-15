@@ -37,7 +37,7 @@ class Vis {
   constructor() {
     this.width = window.innerWidth;
     this.height = window.innerWidth / 2;
-    this.padding = 10;
+    this.padding = 20;
     this.priceData = null;
     this.container = d3.select('.vis_container'); 
     this.info = this.container.append('div').attr('class', 'info');
@@ -49,7 +49,7 @@ class Vis {
     this.axisY = d3.svg.axis().orient('right').ticks(10);
     this.axisGroupX = this.content.append('g').attr('class', 'axis-x');
     this.axisGroupY = this.content.append('g').attr('class', 'axis-y');
-    this.lineGenerator = d3.svg.line().interpolate('basis');
+    this.lineGenerator = d3.svg.line().interpolate('basis').defined((d) => d.date >= this.beginTime );
     this.line = null;
     this.eventMarkers = null;
 
@@ -75,7 +75,11 @@ class Vis {
   loadData(cb) {
     d3.csv('vis/data/oil.csv', this.transformData, (err, data) => {
       if(err) throw err;
+
       this.priceData = data;
+
+      console.log(data);
+
       // make sample transactions !!!
       // this.transactionData = data.filter(d => Math.random() > 0.98).map(d => {
       //   d.type = Math.random() > 0.5 ? 'BUY' : 'SELL';
@@ -282,7 +286,6 @@ class Vis {
     timeOffset.setYear(timeOffset.getFullYear() + 10);
 
     this.line
-        // .transition()
         .attr('d', this.lineGenerator);
 
     // this.linecontainer
