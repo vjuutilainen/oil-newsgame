@@ -27,12 +27,13 @@ const formatDateYear = d3.time.format('%Y');
 class Vis {
   
   constructor(options) {
-    this.width = window.innerWidth;
-    this.height = window.innerWidth / 2;
+    this.container = d3.select('.vis_container');
+    this.width = this.container[0][0].getBoundingClientRect().width;
+    this.height = this.width / 2;
     this.padding = 40;
     this.leftPadding = 20;
     this.priceData = null;
-    this.container = d3.select('.vis_container'); 
+    
     this.info = this.container.append('div').attr('class', 'info');
     this.svg = this.container.append('svg');
     this.content = this.svg.append('g').attr('class', 'content').attr('transform', 'translate(0, ' + (this.padding / 2) + ')');
@@ -126,8 +127,8 @@ class Vis {
   }
 
   resizeGraph() {
-    this.width = window.innerWidth;
-    this.height = window.innerWidth / 2;
+    this.width = this.container[0][0].getBoundingClientRect().width;
+    this.height = this.width / 2;
     this.innerHeight = this.height - (this.padding * 2); 
 
     this.svg.attr('width', this.width).attr('height', this.height);
