@@ -10,7 +10,6 @@ html,body {
 }
 .container {
   margin: auto auto;
-  max-width: 600px;
   /* For old browsers */
   display: block;
   position: relative;
@@ -18,8 +17,9 @@ html,body {
   h1,
   h3,
   p {
+    max-width: 600px;
     padding: 0 20px;
-    margin: 0 0 15px 0;
+    margin: 0 auto 15px auto;
   }
   h1 {
     font-size: 20px;
@@ -120,6 +120,27 @@ html,body {
       display: none;
       position: relative;
       width: 100%;
+      .info {
+        height: 125px;
+        margin: auto auto;
+        overflow: hidden;
+        max-width: 600px;
+        position: static;
+        width: 100%;
+        h4 {
+          color: #828282;
+          display: inline;
+          font-weight: 300;
+          font-size: 20px;
+          margin: 0 0 10px 0;
+        }
+        h3 {
+          display: inline;
+          font-size: 20px;
+          font-weight: 700;
+          margin: 0 0 0 0;
+        }
+      }
     }
 
     .year,
@@ -129,12 +150,21 @@ html,body {
 
     // Controls container.
     .controls_container {
+      height: 115px;
       .control {
         display: none;
         &:disabled {
-          .opacity(0.5);
+          .opacity(0.2);
         }
       }
+    }
+    .feedback_container {
+      left: 50%;
+      margin-left: -200px;
+      position: absolute;
+      text-align: center;
+      top: 40%;
+      width: 400px;
     }
     .result_container {
       display: none;
@@ -153,21 +183,22 @@ html,body {
         padding: 5px;
         width: 100%;
       }
-      .share_container {
-        margin: 20px 0;
-        text-align: center;
-        a {
-          color: #fff;              
-        }
-        .fa {
-          margin-top: 10px;
-          &.fa-yle-some {
-            font-size: 50px;
-            margin: 0 0 0 0;
-            &:hover {
-              color: #777;
-            }
-          }
+    }
+  }
+
+  .share_container {
+    margin: 20px 0;
+    text-align: center;
+    a {
+      color: #fff;
+    }
+    .fa {
+      margin-top: 10px;
+      &.fa-yle-some {
+        font-size: 50px;
+        margin: 0 0 0 0;
+        &:hover {
+          color: #777;
         }
       }
     }

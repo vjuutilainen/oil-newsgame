@@ -14,6 +14,7 @@
       return parseFloat(x.toFixed(d));
     },
     getScale: function () {
+      yleApp.fixHeights();
       var width = esivis.width();
       if (width >= 578) {
         esivis.addClass('wide');
@@ -100,10 +101,11 @@
     },
     printResult: function () {
       var container = $('.result_wrapper', esivis).empty();
+      var info_container = $('.vis_container .info', esivis).empty();
       yleApp.var.highscore.push(yleApp.var.asset);
       yleApp.var.highscore.sort().reverse();
-      $('<h1>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(container);
-      $('<div class="share_container"><div><strong>Share on <a href="" class="twitter" title="Share on Twitter" target="_blank">Twitter</a>.</strong></div><div><a href="" class="twitter" title="Share on Twitter" target="_blank"><i class="fa fa-yle-some fa-twitter"></i></a></div></div>').appendTo(container);
+      $('<h1>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(info_container);
+      $('<div class="share_container"><div><strong>Share on <a href="" class="twitter" title="Share on Twitter" target="_blank">Twitter</a>.</strong></div><div><a href="" class="twitter" title="Share on Twitter" target="_blank"><i class="fa fa-yle-some fa-twitter"></i></a></div></div>').appendTo(info_container);
       yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
       $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
       $('<h3>Top scores</h3>').appendTo(container);
@@ -223,8 +225,8 @@
       // Sell event.
       esivis.on('click', '.control.sell', function (event) {
         yleApp.vis.sell();
-        yleApp.vis.stop();
         yleApp.handleSell();
+        yleApp.vis.stop();
         yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
         $(this).removeClass('sell').addClass('buy').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div>');
         event.preventDefault();
@@ -239,7 +241,7 @@
       });
     },
     handleSell: function () {
-      var container = $('.feedback_container', esivis).empty().show();
+      var container = $('.feedback_container', esivis).empty().show().height($('.vis_container', esivis).height());
       $('.control', esivis).prop('disabled', true);
       var month = new Array();
       month[0] = "January";
@@ -255,11 +257,14 @@
       month[10] = "November";
       month[11] = "December";
       if (yleApp.vis.getCurrentPrice() > yleApp.previousBuy.price) {
-        $('<div><h1>Good job!</h1><p>You bought oil in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $ per gallon</span> and sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per gallon</span>.</p></div>').appendTo(container);
+        // $('<div><h1>Good job!</h1><p>Bought in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span>, price <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $ per barrel</span>. Sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span>, price <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per barrel</span>.</p></div>').appendTo(container);
+        $('<div><h1>Good job!</h1>').appendTo(container);
       }
       else {
-        $('<div><h1>You didn\'t do so well.</h1><p>You bought oil in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + '$  per gallon and sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per gallon</span>.</p></div>').appendTo(container);
+        // $('<div><h1>You didn\'t do so well.</h1><p>Bought in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span> at price <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + '$  per barrel. Sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span> at price <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per barrel</span>.</p></div>').appendTo(container);
+        $('<div><h1>You didn\'t do so well.</h1>').appendTo(container);
       }
+      $('<p>Bought <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $</span>, sold <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $</span>.</p></div>').appendTo(container);
       setTimeout(function () {
         $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
