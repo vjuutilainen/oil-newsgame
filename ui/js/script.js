@@ -242,10 +242,24 @@
         $(this).prop('disabled', true).addClass('disabled');
         $(this).find('.button_text').text('Thank you!');
       });
+      esivis.on('click', '.pause_container a', function (event) {
+        if (!$(this).hasClass('disabled')) {
+          if ($(this).hasClass('stop')) {
+            $(this).addClass('play').removeClass('stop').html('<i class="fa fa-play"></i>');
+            yleApp.vis.stop();
+          }
+          else {
+            $(this).addClass('stop').removeClass('play').html('<i class="fa fa-pause"></i>');
+            yleApp.vis.play();
+          }          
+        }
+        event.preventDefault();
+      });
     },
     handleSell: function () {
       var container = $('.feedback_container', esivis).empty().show().height($('.vis_container', esivis).height());
       $('.control', esivis).prop('disabled', true);
+      $('.pause_container a', esivis).addClass('disabled');
       var month = new Array();
       month[0] = "January";
       month[1] = "February";
@@ -269,6 +283,7 @@
       setTimeout(function () {
         $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
+        $('.pause_container a', esivis).removeClass('disabled');
         yleApp.vis.play();
       }, 3000);
     },
