@@ -284,13 +284,16 @@ class Vis {
 
   stop() {
     this.playing = false;
+    this.updateGraph();
+    this.updatetransactionMarkers();
+    this.updateInfo();
   }
 
   getCurrentPrice() {
     return this.currentPrice;
   }
 
-   getCurrentYear() {
+  getCurrentYear() {
     return this.currentTime;
   }
 
