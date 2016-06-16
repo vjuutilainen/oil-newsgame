@@ -104,10 +104,9 @@
       var info_container = $('.vis_container .info', esivis).empty();
       yleApp.var.highscore.push(yleApp.var.asset);
       yleApp.var.highscore.sort().reverse();
-      $('<h1>Assets multiplied ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(info_container);
+      $('<h1>Assets multiplied ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1><p>This was the history of crude oil prices from 1960 to the present day.</p>').appendTo(info_container);
       $('<div class="share_container"><div><a href="" class="twitter" title="Share on Twitter" target="_blank"><i class="fa fa-yle-some fa-twitter"></i></a></div></div>').appendTo(info_container);
       yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
-      $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
       $('<br /><h3>Your top 5 scores</h3>').appendTo(container);
       var list_container = $('<ol class="center"></ol>').appendTo(container);
       $.each(yleApp.var.highscore, function (i, highscore) {
@@ -266,9 +265,9 @@
       }
       $('<div><p>Bought <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $</span>, sold <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $</span>.</p></div>').appendTo(container);
       setTimeout(function () {
-        $('.feedback_container', esivis).fadeOut(300);
+        // $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
-        yleApp.vis.play();
+        // yleApp.vis.play();
       }, 3000);
     },
     handleEnd: function () {
