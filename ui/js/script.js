@@ -88,7 +88,7 @@
           // console.log('Bought: ' + yleApp.var.lastPrice)
           // console.log('Sold: ' + current_price)
           // console.log('Assets: ' + yleApp.var.asset)
-          yleApp.var.asset = yleApp.var.asset * ((current_price / yleApp.var.lastPrice) - 1) + yleApp.var.asset;
+          yleApp.var.asset = yleApp.var.asset * (current_price / yleApp.var.lastPrice);
           $('<div>' + yleApp.var.eventIndex + '. Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
         }
         else if (action === 'buy') {
@@ -150,6 +150,7 @@
             $('.counter', esivis).text('0');
             $('.counter_container', esivis).fadeOut(700);
             if (restart === true) {
+              console.log('restart')
               yleApp.vis.restart();
             }
             else {
