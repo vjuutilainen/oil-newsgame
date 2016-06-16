@@ -213,6 +213,7 @@
       });
       // Buy event.
       esivis.on('click', '.control.buy', function (event) {
+        yleApp.var.buy = true;
         yleApp.vis.buy();
         yleApp.previousBuy = {
           date:yleApp.vis.getCurrentYear(),
@@ -224,6 +225,7 @@
       });
       // Sell event.
       esivis.on('click', '.control.sell', function (event) {
+        yleApp.var.buy = false;
         yleApp.vis.sell();
         yleApp.handleSell();
         yleApp.vis.stop();
@@ -257,24 +259,25 @@
       month[10] = "November";
       month[11] = "December";
       if (yleApp.vis.getCurrentPrice() > yleApp.previousBuy.price) {
-        // $('<div><h1>Good job!</h1><p>Bought in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span>, price <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $ per barrel</span>. Sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span>, price <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per barrel</span>.</p></div>').appendTo(container);
         $('<div><h1>Good job!</h1></div>').appendTo(container);
       }
       else {
-        // $('<div><h1>You didn\'t do so well.</h1><p>Bought in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span> at price <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + '$  per barrel. Sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span> at price <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per barrel</span>.</p></div>').appendTo(container);
         $('<div><h1>You didn\'t do so well.</h1></div>').appendTo(container);
       }
       $('<div><p>Bought <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $</span>, sold <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $</span>.</p></div>').appendTo(container);
       setTimeout(function () {
-        // $('.feedback_container', esivis).fadeOut(300);
+        $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
-        // yleApp.vis.play();
+        yleApp.vis.play();
       }, 3000);
     },
     handleEnd: function () {
       $('.control', esivis).prop('disabled', true);
-      yleApp.vis.sell();
-      yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
+      if (yleApp.var.buy === true) {
+        yleApp.vis.sell();
+        yleApp.vis.stop();
+        yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
+      }
       yleApp.printResult();
     },
     destroy: function  (argument) {

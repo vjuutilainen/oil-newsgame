@@ -8,6 +8,8 @@ html,body {
   padding: 0;
   margin: 0;
 }
+@grey: #828282;
+@fontsize: 20px;
 .container {
   margin: auto auto;
   /* For old browsers */
@@ -21,14 +23,19 @@ html,body {
     padding: 0 20px;
     margin: 0 auto 15px auto;
   }
+  ol,
+  ul {
+    margin: 0 auto 15px auto;
+    max-width: 600px;
+  }
   h1 {
-    font-size: 20px;
+    font-size: @fontsize;
     font-weight: 700;
   }
   p {
-    color: #828282;
+    color: @grey;
     font-family: 300;
-    font-size: 20px;
+    font-size: @fontsize;
   }
   a,
   a:hover,
@@ -69,7 +76,7 @@ html,body {
         margin-left: -80px;
       }
       .counter {
-        color: #828282;
+        color: @grey;
         font-size: 150px;
         left: 50%;
         margin-left: -50px;
@@ -89,7 +96,7 @@ html,body {
         padding-top: 10px;
         font-weight: 300;
         .asset_text {
-          color: #828282;
+          color: @grey;
           float: left;
           text-transform: uppercase;
           font-size: 14px;
@@ -119,26 +126,31 @@ html,body {
       box-sizing: border-box;
       display: none;
       position: relative;
-      width: 100%;
       .info {
-        height: 125px;
+        box-sizing: border-box;
+        height: 115px;
         margin: auto auto;
-        overflow: hidden;
         max-width: 600px;
+        overflow: hidden;
+        padding: 0 10px;
         position: static;
         width: 100%;
         h4 {
-          color: #828282;
+          color: @grey;
           display: inline;
-          font-weight: 300;
           font-size: 20px;
+          font-weight: 300;
           margin: 0 0 10px 0;
+          position: relative;
+          z-index: 10;
         }
         h3 {
           display: inline;
           font-size: 20px;
           font-weight: 700;
           margin: 0 0 0 0;
+          position: relative;
+          z-index: 10;
         }
       }
     }
@@ -159,17 +171,14 @@ html,body {
       }
     }
     .feedback_container {
-      left: 50%;
-      margin-left: -200px;
+      background-color: rgba(0, 0, 0, 0.7);
       position: absolute;
       text-align: center;
-      top: 190px;
-      z-index: 3;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 3;
       div {
-        margin: auto auto;
-        width: 400px;
+        position: relative;
+        top: 45%;
         h1 {
           padding-top: 20px;
         }
@@ -182,14 +191,14 @@ html,body {
       }
       input {
         background-color: #000;
+        border: 0;
         box-sizing: border-box;
         color: #fff;
-        margin: 2px 0;
-        border: 0;
-        text-align: center;
-        outline: none;
         font-size: 14px;
+        margin: 2px 0;
+        outline: none;
         padding: 5px;
+        text-align: center;
         width: 100%;
       }
     }
