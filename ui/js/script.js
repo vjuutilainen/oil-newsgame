@@ -103,6 +103,8 @@
       yleApp.var.highscore.push(yleApp.var.asset);
       yleApp.var.highscore.sort().reverse();
       $('<h1>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(container);
+      $('<div class="share_container"><div><strong>Share on <a href="" class="twitter" title="Share on Twitter" target="_blank">Twitter</a>.</strong></div><div><a href="" class="twitter" title="Share on Twitter" target="_blank"><i class="fa fa-yle-some fa-twitter"></i></a></div></div>').appendTo(container);
+      yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
       $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
       $('<h3>Top scores</h3>').appendTo(container);
       var list_container = $('<ol></ol>').appendTo(container);
@@ -111,7 +113,6 @@
       });
       $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.controls_container', esivis).hide();
-      yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
       $('.result_container', esivis).fadeIn(500);
     },
     updateSomeLinks: function (highscore) {
