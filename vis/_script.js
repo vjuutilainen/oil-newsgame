@@ -32,7 +32,7 @@ class Vis {
     this.width = this.parentContainer[0][0].getBoundingClientRect().width;
     this.height = this.width / 2;
     this.padding = 40;
-    this.leftPadding = 20;
+    this.leftPadding = 0;
     this.priceData = null;
     
     this.info = this.container.append('div').attr('class', 'info');
@@ -147,31 +147,29 @@ class Vis {
   }
 
   updateInfoMarker() {
-    this.infoMarker.attr({
-      width: 10,
-      height: this.height,
-      x: this.width - 10,
-      y: 0,
-    });
+    // this.infoMarker.attr({
+    //   width: 10,
+    //   height: this.height,
+    //   x: this.width - 10,
+    //   y: 0,
+    // });
   }
 
   initInfoMarker() {
-    this.infoMarker = this.content.append('rect').attr({
-      width: 10,
-      height: this.height,
-      x: this.width - 10,
-      y: 0,
-      fill: 'white', 
-      opacity: 0.5
-    });
+    // this.infoMarker = this.content.append('rect').attr({
+    //   width: 10,
+    //   height: this.height,
+    //   x: this.width - 10,
+    //   y: 0,
+    //   fill: 'white', 
+    //   opacity: 0.5
+    // });
   }
 
   initInfo() {
 
     // other intro? !!!
     let html = '';
-               
-
     this.info.html(html);
 
   }
@@ -182,7 +180,7 @@ class Vis {
       return curr.date <= this.currentTime ? curr : prev;
     }, this.eventData[0]);
     
-    let html = '<h4>' + this.currentTime.getFullYear() + '</h4>' +
+    let html = '<h4>' + event.date.getFullYear() + '</h4>' +
                 '<h3>' + event.title + '</h3>';
                
     this.info.html(html);
