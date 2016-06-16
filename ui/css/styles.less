@@ -21,6 +21,13 @@ html,body {
     padding: 0 20px;
     margin: 0 auto 15px auto;
   }
+  ol,
+  ul {
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+  }
   h1 {
     font-size: 20px;
     font-weight: 700;
@@ -123,15 +130,16 @@ html,body {
       .info {
         height: 125px;
         margin: auto auto;
-        overflow: hidden;
         max-width: 600px;
-        position: static;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
         width: 100%;
         h4 {
           color: #828282;
           display: inline;
-          font-weight: 300;
           font-size: 20px;
+          font-weight: 300;
           margin: 0 0 10px 0;
         }
         h3 {
@@ -159,17 +167,14 @@ html,body {
       }
     }
     .feedback_container {
-      left: 50%;
-      margin-left: -200px;
+      background-color: rgba(0, 0, 0, 0.7);
       position: absolute;
       text-align: center;
-      top: 190px;
-      z-index: 3;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 3;
       div {
-        margin: auto auto;
-        width: 400px;
+        position: relative;
+        top: 45%;
         h1 {
           padding-top: 20px;
         }
@@ -182,14 +187,14 @@ html,body {
       }
       input {
         background-color: #000;
+        border: 0;
         box-sizing: border-box;
         color: #fff;
-        margin: 2px 0;
-        border: 0;
-        text-align: center;
-        outline: none;
         font-size: 14px;
+        margin: 2px 0;
+        outline: none;
         padding: 5px;
+        text-align: center;
         width: 100%;
       }
     }
