@@ -34,9 +34,10 @@ var Vis = function () {
 
     _classCallCheck(this, Vis);
 
+    this.widthContainer = d3.select('.width_container');
     this.parentContainer = d3.select('#esi-vis .init_container');
     this.container = d3.select('.vis_container');
-    this.width = this.container[0][0].getBoundingClientRect().width;
+    this.width = this.widthContainer[0][0].getBoundingClientRect().width;
     this.height = this.width / 2;
     this.padding = 40;
     this.leftPadding = 0;
@@ -148,7 +149,7 @@ var Vis = function () {
   }, {
     key: 'resizeGraph',
     value: function resizeGraph() {
-      this.width = this.container[0][0].getBoundingClientRect().width;
+      this.width = this.widthContainer[0][0].getBoundingClientRect().width;
       this.height = this.width / 2;
       this.innerHeight = this.height - this.padding;
       this.svg.attr('width', this.width).attr('height', this.height);
