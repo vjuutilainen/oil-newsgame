@@ -30,6 +30,11 @@ html,body {
     font-family: 300;
     font-size: 20px;
   }
+  a,
+  a:hover,
+  a:visited {
+    color: #fff;
+  }
   // Init container.
   &.init_container {
     display: block;
@@ -75,7 +80,7 @@ html,body {
         width: 100px;
       }
     }
-    // Result container.
+    // Aseet container.
     .asset_container {
       display: none;
       width: 100%;
@@ -117,10 +122,18 @@ html,body {
       width: 100%;
     }
 
+    .year,
+    .price {
+      font-weight: 700;
+    }
+
     // Controls container.
     .controls_container {
       .control {
         display: none;
+        &:disabled {
+          .opacity(0.5);
+        }
       }
     }
     .result_container {
