@@ -113,7 +113,7 @@
       $.each(yleApp.var.highscore, function (i, highscore) {
         $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
-      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
+      // $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.controls_container, .feedback_container', esivis).hide();
       $('.result_container', esivis).fadeIn(500);
     },
@@ -121,7 +121,7 @@
       var url = window.location.href;
 
       // Twitter share.
-      var twtext = 'I multiplied my assets by ' + highscore + ' times in the oil market! Try it your self';
+      var twtext = 'I multiplied my assets by ' + yleApp.roundNr(highscore, 1) + ' times in the oil market! Try it yourself!';
       $('.twitter', '#esi-vis').attr({href: 'https://twitter.com/share?url=' + encodeURIComponent(url) + '&hashtags=' + encodeURIComponent('gensummit,oil') + '&text=' + encodeURIComponent(twtext)});
     },
     counter: function (restart) {
