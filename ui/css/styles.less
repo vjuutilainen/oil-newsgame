@@ -126,14 +126,12 @@ html,body {
       box-sizing: border-box;
       display: none;
       position: relative;
-      width: 100%;
       .info {
-        height: 125px;
-        margin: auto auto;
+        height: 115px;
         max-width: 600px;
+        margin: auto auto;
         overflow: hidden;
-        position: relative;
-        z-index: 10;
+        position: static;
         width: 100%;
         h4 {
           color: #828282;
@@ -141,12 +139,16 @@ html,body {
           font-size: 20px;
           font-weight: 300;
           margin: 0 0 10px 0;
+          position: relative;
+          z-index: 10;
         }
         h3 {
           display: inline;
           font-size: 20px;
           font-weight: 700;
           margin: 0 0 0 0;
+          position: relative;
+          z-index: 10;
         }
       }
     }
