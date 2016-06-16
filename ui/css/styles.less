@@ -15,6 +15,7 @@ html,body {
   display: block;
   height: 100%;
   margin: auto auto;
+  max-width: 600px;
   position: relative;
   h1,
   h3,
@@ -101,12 +102,15 @@ html,body {
     // Aseet container.
     .asset_container {
       display: none;
-      width: 100%;
       margin-bottom: 10px;
+      width: 100%;
       h1 {
         .clearfix;
-        padding-top: 10px;
         font-weight: 300;
+        padding: 10px 0 0 0;
+        @media (max-width: 599px) {
+          padding: 10px 20px 0 20px;
+        }
         .asset_text {
           color: @grey;
           float: left;
@@ -147,7 +151,7 @@ html,body {
         overflow: hidden;
         position: static;
         width: 100%;
-        @media (max-width: 600px) {
+        @media (max-width: 599px) {
           padding: 0 20px;
         }
         h1,
@@ -182,6 +186,7 @@ html,body {
 
     // Controls container.
     .controls_container {
+      position: relative;
       height: 115px;
       .control {
         display: none;
@@ -189,38 +194,38 @@ html,body {
           .opacity(0.2);
         }
       }
-    }
-    .pause_container {
-      bottom: 10px;
-      display: none;
-      position: absolute;
-      right: 10px;
-      z-index: 6;
-      a {
-        padding-top: 40px;
-        padding-left: 40px;
-        color: @grey;
-        font-size: 16px;
-        text-decoration: none;
-        &.disabled {
-          .opacity(0.3);
+      .pause_container {
+        bottom: -10px;
+        display: none;
+        position: absolute;
+        right: 10px;
+        z-index: 6;
+        a {
+          padding-top: 40px;
+          padding-left: 40px;
+          color: @grey;
+          font-size: 16px;
+          text-decoration: none;
+          &.disabled {
+            .opacity(0.3);
+          }
         }
       }
-    }
-    .reload_container {
-      bottom: 10px;
-      display: none;
-      left: 10px;
-      position: absolute;
-      z-index: 6;
-      a {
-        padding-top: 40px;
-        padding-right: 40px;
-        color: @grey;
-        font-size: 16px;
-        text-decoration: none;
-        &.disabled {
-          .opacity(0.3);
+      .reload_container {
+        bottom: -10px;
+        display: none;
+        left: 10px;
+        position: absolute;
+        z-index: 6;
+        a {
+          padding-top: 40px;
+          padding-right: 40px;
+          color: @grey;
+          font-size: 16px;
+          text-decoration: none;
+          &.disabled {
+            .opacity(0.3);
+          }
         }
       }
     }
@@ -248,6 +253,7 @@ html,body {
         text-align: center;
       }
       .submit_wrapper {
+        max-width: 600px;
         margin: 30px 0;
         label {
           div {

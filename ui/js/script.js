@@ -278,7 +278,7 @@
       else {
         $('<div><h1>Scheiße!</h1></div>').appendTo(container);
       }
-      $('<div><p>Bought <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $</span><br />Sold <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $</span></p></div>').appendTo(container);
+      $('<div><p>Bought <span class="price">$' + yleApp.roundNr(yleApp.previousBuy.price, 1) + '</span><br />Sold <span class="price">$' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + '</span></p></div>').appendTo(container);
       setTimeout(function () {
         $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
@@ -287,6 +287,7 @@
       }, 3000);
     },
     handleEnd: function () {
+      $('.pause_container, .reload_container', esivis).hide();
       $('.control', esivis).prop('disabled', true);
       if (yleApp.var.buy === true) {
         yleApp.vis.sell();
