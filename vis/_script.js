@@ -95,20 +95,31 @@ class Vis {
   }
 
   updatetransactionMarkers() {
-    let join = this.transactionMarkers.data(this.transactionData);
 
+    let join = this.transactionMarkers.data(this.transactionData);
     join.exit().remove();
 
     join.enter()
-        .append('circle')
-        .attr('r', '10')
-        .attr('fill', (d) => {
-          return d.type === 'BUY' ? 'rgb(255, 180, 0)' : 'rgb(0, 180, 200)';
+        .append('g').attr('class', 'transactionmarker')
+        .each(function(d) {
+
+          d3.select(this)
+            .append('circle')
+            .attr('r', '10')
+            .attr('fill', (d) => {
+              return d.type === 'BUY' ? 'rgb(255, 180, 0)' : 'rgb(0, 180, 200)';
+            });
+
+          d3.select(this).append('text').style('font-family', 'Open Sans, Arial').attr('font-size', '8px').attr('fill', 'white').attr('dx', 0).attr('text-anchor', 'middle').attr('dy', 3).text(d => d.price.toFixed(1));
+
         });
 
     join
-        .attr('cx', (d) => this.scaleX(d.date))
-        .attr('cy', (d) => this.scaleY(d.price));
+      .attr('transform', (d) => {
+        let x = this.scaleX(d.date);
+        let y = this.scaleY(d.price);
+        return 'translate('+x+','+y+')';
+      });
 
     this.transactionMarkers = join;
 
@@ -131,7 +142,6 @@ class Vis {
     this.width = this.parentContainer[0][0].getBoundingClientRect().width;
     this.height = this.width / 2;
     this.innerHeight = this.height - this.padding; 
-
     this.svg.attr('width', this.width).attr('height', this.height);
   }
 
@@ -253,6 +263,7 @@ class Vis {
         .attr('d', this.lineGenerator);
 
     this.updatetransactionMarkers();
+
 
     if(this.onEnd) this.onEnd();
 
