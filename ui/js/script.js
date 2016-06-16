@@ -105,7 +105,7 @@
       yleApp.var.highscore.push(yleApp.var.asset);
       yleApp.var.highscore.sort().reverse();
       $('<h1>Assets multiplied ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1><p>This was the history of crude oil prices from 1960 to the present day.</p>').appendTo(info_container);
-      $('<h3>Share your result</h3>').appendTo(container);
+      $('<h3 style="margin-top: 5px;">Share your result</h3>').appendTo(container);
       $('<div class="share_container"><div><a href="" class="twitter" title="Share on Twitter" target="_blank"><i class="fa fa-yle-some fa-twitter"></i></a></div></div>').appendTo(container);
       yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
       $('<h3>Your top 5 scores</h3>').appendTo(container);
@@ -141,7 +141,7 @@
             $('.counter', esivis).text(value - 1);
           }
           else if (value === 1) {
-            $('.controls_container .control', esivis).fadeIn(500);
+            $('.controls_container .control, .pause_container, .reload_container', esivis).fadeIn(500);
             $('.counter_text', esivis).text('Start buying!');
             $('.counter', esivis).text(value - 1);
           }
@@ -150,7 +150,6 @@
             $('.counter', esivis).text('0');
             $('.counter_container', esivis).fadeOut(700);
             if (restart === true) {
-              console.log('restart')
               yleApp.vis.restart();
             }
             else {
@@ -242,10 +241,24 @@
         $(this).prop('disabled', true).addClass('disabled');
         $(this).find('.button_text').text('Thank you!');
       });
+      esivis.on('click', '.pause_container a', function (event) {
+        if (!$(this).hasClass('disabled')) {
+          if ($(this).hasClass('stop')) {
+            $(this).addClass('play').removeClass('stop').html('<i class="fa fa-play"></i>');
+            yleApp.vis.stop();
+          }
+          else {
+            $(this).addClass('stop').removeClass('play').html('<i class="fa fa-pause"></i>');
+            yleApp.vis.play();
+          }          
+        }
+        event.preventDefault();
+      });
     },
     handleSell: function () {
       var container = $('.feedback_container', esivis).empty().show().height($('.vis_container', esivis).height());
       $('.control', esivis).prop('disabled', true);
+      $('.pause_container a, .reload_container a', esivis).addClass('disabled');
       var month = new Array();
       month[0] = "January";
       month[1] = "February";
@@ -265,14 +278,16 @@
       else {
         $('<div><h1>Scheiße!</h1></div>').appendTo(container);
       }
-      $('<div><p>Bought <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $</span><br />Sold <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $</span></p></div>').appendTo(container);
+      $('<div><p>Bought <span class="price">$' + yleApp.roundNr(yleApp.previousBuy.price, 1) + '</span><br />Sold <span class="price">$' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + '</span></p></div>').appendTo(container);
       setTimeout(function () {
         $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
+        $('.pause_container a, .reload_container a', esivis).removeClass('disabled');
         yleApp.vis.play();
       }, 3000);
     },
     handleEnd: function () {
+      $('.pause_container, .reload_container', esivis).hide();
       $('.control', esivis).prop('disabled', true);
       if (yleApp.var.buy === true) {
         yleApp.vis.sell();

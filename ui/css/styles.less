@@ -15,23 +15,30 @@ html,body {
   display: block;
   height: 100%;
   margin: auto auto;
+  max-width: 600px;
   position: relative;
   h1,
   h3,
   p {
+    font-family: 'Open Sans', arial !important;
     margin: 0 auto 5px auto;
     max-width: 600px;
     padding: 0 20px;
   }
   ol,
   ul {
+    color: @grey;
+    font-family: 'Open Sans', arial !important;
     margin: 0 auto 15px auto;
-    padding-right: 10px;
     max-width: 600px;
+    padding-right: 10px;
     &.center {
       list-style-position: inside;
       padding: 0;
       text-align: center;
+    }
+    a {
+      color: @grey;
     }
   }
   h1 {
@@ -41,7 +48,7 @@ html,body {
   p {
     color: @grey;
     font-family: 300;
-    font-size: @fontsize;
+    font-size: 18px;
   }
   a,
   a:hover,
@@ -101,12 +108,15 @@ html,body {
     // Aseet container.
     .asset_container {
       display: none;
-      width: 100%;
       margin-bottom: 10px;
+      width: 100%;
       h1 {
         .clearfix;
-        padding-top: 10px;
         font-weight: 300;
+        padding: 10px 0 0 0;
+        @media (max-width: 599px) {
+          padding: 10px 20px 0 20px;
+        }
         .asset_text {
           color: @grey;
           float: left;
@@ -139,15 +149,18 @@ html,body {
       box-sizing: border-box;
       display: none;
       position: relative;
+      svg {
+        z-index: -1;
+      }
       .info {
         box-sizing: border-box;
-        height: 115px;
+        height: 120px;
         margin: auto auto;
         max-width: 600px;
         overflow: hidden;
         position: static;
         width: 100%;
-        @media (max-width: 600px) {
+        @media (max-width: 599px) {
           padding: 0 20px;
         }
         h1,
@@ -157,7 +170,7 @@ html,body {
         h4 {
           color: @grey;
           display: inline;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 300;
           margin: 0 0 10px 0;
           // position: relative;
@@ -165,7 +178,7 @@ html,body {
         }
         h3 {
           display: inline;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
           margin: 0 0 0 0;
           // position: relative;
@@ -182,11 +195,46 @@ html,body {
 
     // Controls container.
     .controls_container {
+      position: relative;
       height: 115px;
       .control {
         display: none;
         &:disabled {
           .opacity(0.2);
+        }
+      }
+      .pause_container {
+        bottom: -10px;
+        display: none;
+        position: absolute;
+        right: 10px;
+        z-index: 6;
+        a {
+          padding-top: 40px;
+          padding-left: 40px;
+          color: @grey;
+          font-size: 16px;
+          text-decoration: none;
+          &.disabled {
+            .opacity(0.3);
+          }
+        }
+      }
+      .reload_container {
+        bottom: -10px;
+        display: none;
+        left: 10px;
+        position: absolute;
+        z-index: 6;
+        a {
+          padding-top: 40px;
+          padding-right: 40px;
+          color: @grey;
+          font-size: 16px;
+          text-decoration: none;
+          &.disabled {
+            .opacity(0.3);
+          }
         }
       }
     }
@@ -214,6 +262,7 @@ html,body {
         text-align: center;
       }
       .submit_wrapper {
+        max-width: 600px;
         margin: 30px 0;
         label {
           div {
@@ -279,7 +328,6 @@ html,body {
         width: 80px;
         height: 80px;
       }
-      
     }
     .button_text {
       color: #fff;
