@@ -130,7 +130,7 @@ class Vis {
   resizeGraph() {
     this.width = this.parentContainer[0][0].getBoundingClientRect().width;
     this.height = this.width / 2;
-    this.innerHeight = this.height - (this.padding * 2); 
+    this.innerHeight = this.height - this.padding; 
 
     this.svg.attr('width', this.width).attr('height', this.height);
   }
