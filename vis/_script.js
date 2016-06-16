@@ -40,9 +40,9 @@ class Vis {
     this.content = this.svg.append('g').attr('class', 'content').attr('transform', 'translate(0, ' + (this.padding / 2) + ')');
     this.scaleX = d3.time.scale();
     this.scaleY = d3.scale.linear();
-    this.axisX = d3.svg.axis().orient('top').ticks(10);
+    this.axisX = d3.svg.axis().orient('bottom').ticks(10);
     this.axisY = d3.svg.axis().orient('right').ticks(10);
-    this.axisGroupX = this.content.append('g').attr('class', 'axis-x');
+    this.axisGroupX = this.content.append('g').attr('class', 'axis-x').attr('transform', 'translate(0, ' + (this.height - 40) + ')');
     this.axisGroupY = this.content.append('g').attr('class', 'axis-y');
     this.lineGenerator = d3.svg.line().interpolate('basis').defined((d) => d.date > this.beginTime );
     this.line = null;
@@ -143,6 +143,7 @@ class Vis {
     this.height = this.width / 2;
     this.innerHeight = this.height - this.padding; 
     this.svg.attr('width', this.width).attr('height', this.height);
+    this.axisGroupX.attr('transform', 'translate(0, ' + (this.height - 40) + ')');
   }
 
   getDataCrop(data) {
@@ -201,7 +202,7 @@ class Vis {
 
     let newTime = new Date(this.currentTime);
     
-    newTime.setDate(newTime.getDate() + 10);
+    newTime.setDate(newTime.getDate() + 3);
 
     //newTime.setMonth(newTime.getMonth() + 1);
     this.currentTime = newTime;
@@ -318,7 +319,7 @@ class Vis {
     
     this.scaleX.range([0, this.width - this.leftPadding]);
     this.scaleY.range([this.innerHeight, 0]);
-    this.axisX.scale(this.scaleX);
+    this.axisX.scale(this.scaleX).ticks(d3.time.year, 10);
     this.axisY.scale(this.scaleY).ticks(5);
 
     this.axisGroupX.call(this.axisX);
