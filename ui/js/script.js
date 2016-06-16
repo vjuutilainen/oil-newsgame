@@ -104,12 +104,12 @@
       var info_container = $('.vis_container .info', esivis).empty();
       yleApp.var.highscore.push(yleApp.var.asset);
       yleApp.var.highscore.sort().reverse();
-      $('<h1>You multiplied your assets by ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(info_container);
+      $('<h1>Assets multiplied ' + yleApp.roundNr(yleApp.var.asset, 1) + ' times.</h1>').appendTo(info_container);
       $('<div class="share_container"><div><a href="" class="twitter" title="Share on Twitter" target="_blank"><i class="fa fa-yle-some fa-twitter"></i></a></div></div>').appendTo(info_container);
       yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
       $('<p>Sed ultricies interdum nisi, non laoreet massa condimentum vitae. Ut at dignissim ligula. Nulla in vehicula turpis. Duis placerat erat vitae sapien interdum, at ornare lectus egestas. Suspendisse aliquam velit quis lacus mattis, vel pharetra erat euismod.</p>').appendTo(container);
-      $('<h3>Top scores</h3>').appendTo(container);
-      var list_container = $('<ol></ol>').appendTo(container);
+      $('<br /><h3>Your top 5 scores</h3>').appendTo(container);
+      var list_container = $('<ol class="center"></ol>').appendTo(container);
       $.each(yleApp.var.highscore, function (i, highscore) {
         $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
@@ -137,12 +137,12 @@
           }
           else if (value === 2) {
             $('.vis_container', esivis).fadeIn(500);
-            $('.counter_text', esivis).text('Set!');
+            $('.counter_text', esivis).text('Get set!');
             $('.counter', esivis).text(value - 1);
           }
           else if (value === 1) {
             $('.controls_container .control', esivis).fadeIn(500);
-            $('.counter_text', esivis).text('Buy!');
+            $('.counter_text', esivis).text('Start buying!');
             $('.counter', esivis).text(value - 1);
           }
           else {
@@ -174,8 +174,8 @@
     },
     printHighScores: function (data) {
       var container = $('.highscores_wrapper', esivis).empty();
-      $('<h3>All time high</h3>').appendTo(container);
-      var list_container = $('<ol></ol>').appendTo(container);
+      $('<h3>All-time high scores</h3>').appendTo(container);
+      var list_container = $('<ol class="center"></ol>').appendTo(container);
       $.each(data, function (i, highscore) {
         $('<li>' + highscore.nickname + ': ' + yleApp.roundNr(highscore.score, 1) + ' times</li>').appendTo(list_container);
       });
@@ -262,7 +262,7 @@
         $('<div><h1>Good job!</h1></div>').appendTo(container);
       }
       else {
-        $('<div><h1>You didn\'t do so well.</h1></div>').appendTo(container);
+        $('<div><h1>Scheiße!</h1></div>').appendTo(container);
       }
       $('<div><p>Bought <span class="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $</span>, sold <span class="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $</span>.</p></div>').appendTo(container);
       setTimeout(function () {
