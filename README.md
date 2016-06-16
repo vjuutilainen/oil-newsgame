@@ -1,3 +1,3 @@
-# Oil Newsgame
+# The Game of Oil
 
-work in progress...
+Built during GEN hackathon in Vienna.
