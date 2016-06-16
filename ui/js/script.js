@@ -112,7 +112,7 @@
         $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
       $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
-      $('.controls_container', esivis).hide();
+      $('.controls_container, .feedback_container', esivis).hide();
       $('.result_container', esivis).fadeIn(500);
     },
     updateSomeLinks: function (highscore) {
@@ -209,16 +209,22 @@
         yleApp.destroy();
         yleApp.counter(true);
       });
-      // Sell event.
+      // Buy event.
       esivis.on('click', '.control.buy', function (event) {
         yleApp.vis.buy();
+        yleApp.previousBuy = {
+          date:yleApp.vis.getCurrentYear(),
+          price:yleApp.vis.getCurrentPrice()
+        }
         yleApp.calculateAsset('buy');
         $(this).removeClass('buy').addClass('sell').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/sell.png" class="button_img" /></div><div class="button_text">Sell oil</div>');
         event.preventDefault();
       });
-      // Buy event.
+      // Sell event.
       esivis.on('click', '.control.sell', function (event) {
         yleApp.vis.sell();
+        yleApp.vis.stop();
+        yleApp.handleSell();
         yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
         $(this).removeClass('sell').addClass('buy').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div>');
         event.preventDefault();
@@ -232,9 +238,38 @@
         $(this).find('.button_text').text('Thank you!');
       });
     },
-    handleEnd: function () {
-      console.log('asd')
+    handleSell: function () {
+      var container = $('.feedback_container', esivis).empty().show();
       $('.control', esivis).prop('disabled', true);
+      var month = new Array();
+      month[0] = "January";
+      month[1] = "February";
+      month[2] = "March";
+      month[3] = "April";
+      month[4] = "May";
+      month[5] = "June";
+      month[6] = "July";
+      month[7] = "August";
+      month[8] = "September";
+      month[9] = "October";
+      month[10] = "November";
+      month[11] = "December";
+      if (yleApp.vis.getCurrentPrice() > yleApp.previousBuy.price) {
+        $('<div><h1>Good job!</h1><p>You bought oil in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + ' $ per gallon</span> and sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per gallon</span>.</p></div>').appendTo(container);
+      }
+      else {
+        $('<div><h1>You didn\'t do so well.</h1><p>You bought oil in <span class="year">' + month[yleApp.previousBuy.date.getMonth()] + ' ' + yleApp.previousBuy.date.getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.previousBuy.price, 1) + '$  per gallon and sold in <span class="year">' + month[yleApp.vis.getCurrentYear().getMonth()] + ' ' + yleApp.vis.getCurrentYear().getFullYear() + '</span> at price <span clas="price">' + yleApp.roundNr(yleApp.vis.getCurrentPrice(), 1) + ' $ per gallon</span>.</p></div>').appendTo(container);
+      }
+      setTimeout(function () {
+        $('.feedback_container', esivis).fadeOut(300);
+        $('.control', esivis).prop('disabled', false);
+        yleApp.vis.play();
+      }, 3000);
+    },
+    handleEnd: function () {
+      $('.control', esivis).prop('disabled', true);
+      yleApp.vis.sell();
+      yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
       yleApp.printResult();
     },
     destroy: function  (argument) {
