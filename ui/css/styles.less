@@ -8,25 +8,30 @@ html,body {
   padding: 0;
   margin: 0;
 }
-@grey: #828282;
+@grey: #d0d0d0;
 @fontsize: 20px;
 .container {
-  margin: auto auto;
   /* For old browsers */
   display: block;
-  position: relative;
   height: 100%;
+  margin: auto auto;
+  position: relative;
   h1,
   h3,
   p {
+    margin: 0 auto 5px auto;
     max-width: 600px;
     padding: 0 20px;
-    margin: 0 auto 15px auto;
   }
   ol,
   ul {
     margin: 0 auto 15px auto;
     max-width: 600px;
+    &.center {
+      list-style-position: inside;
+      padding: 0;
+      text-align: center;
+    }
   }
   h1 {
     font-size: @fontsize;
@@ -65,26 +70,27 @@ html,body {
       position: absolute;
       width: 100%;
       z-index: 2;
-      .counter_text {
-        width: 160px;
-        height: 30px;
-        margin-top: 50px;
-        left: 50%;
-        position: absolute;
-        top: 50%;
-        text-align: center;
-        margin-left: -80px;
-      }
       .counter {
         color: @grey;
         font-size: 150px;
         left: 50%;
         margin-left: -50px;
-        margin-top: -120px;
+        margin-top: -140px;
         position: absolute;
         text-align: center;
         top: 50%;
         width: 100px;
+      }
+      .counter_text {
+        width: 160px;
+        height: 30px;
+        margin-top: 35px;
+        left: 50%;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        text-align: center;
+        margin-left: -80px;
       }
     }
     // Aseet container.
@@ -109,8 +115,9 @@ html,body {
           width: 50%;
           font-weight: bold;
           text-align: right;
-          &:after {
-            content: 'x';
+          &:before {
+            font-weight: normal;
+            content: '× ';
           }
         }
       }
@@ -132,9 +139,12 @@ html,body {
         margin: auto auto;
         max-width: 600px;
         overflow: hidden;
-        padding: 0 10px;
+        padding: 0 20px;
         position: static;
         width: 100%;
+        h1 { 
+          padding: 0;
+        }
         h4 {
           color: @grey;
           display: inline;
@@ -157,6 +167,7 @@ html,body {
 
     .year,
     .price {
+      color: #fff;
       font-weight: 700;
     }
 
@@ -189,17 +200,28 @@ html,body {
       h1 {
         padding-top: 10px;
       }
-      input {
-        background-color: #000;
-        border: 0;
-        box-sizing: border-box;
-        color: #fff;
-        font-size: 14px;
-        margin: 2px 0;
-        outline: none;
-        padding: 5px;
+      h3 {
         text-align: center;
-        width: 100%;
+      }
+      .submit_wrapper {
+        margin: 20px 0;
+        label {
+          div {
+            margin: 0 20px;
+            input {
+              background-color: #000;
+              border: 1px solid @grey;
+              box-sizing: border-box;
+              color: #fff;
+              font-size: 16px;
+              margin: 2px 0;
+              outline: none;
+              padding: 5px;
+              text-align: center;
+              width: 100%;
+            }
+          }
+        }
       }
     }
   }
@@ -234,6 +256,7 @@ html,body {
     }
   }
   .button {
+    margin-top: 5px;
     background-color: transparent;
     border: 0;
     cursor: pointer;
