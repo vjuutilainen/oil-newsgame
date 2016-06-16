@@ -20,19 +20,25 @@ html,body {
   h1,
   h3,
   p {
+    font-family: 'Open Sans', arial !important;
     margin: 0 auto 5px auto;
     max-width: 600px;
     padding: 0 20px;
   }
   ol,
   ul {
+    color: @grey;
+    font-family: 'Open Sans', arial !important;
     margin: 0 auto 15px auto;
-    padding-right: 10px;
     max-width: 600px;
+    padding-right: 10px;
     &.center {
       list-style-position: inside;
       padding: 0;
       text-align: center;
+    }
+    a {
+      color: @grey;
     }
   }
   h1 {
@@ -42,7 +48,7 @@ html,body {
   p {
     color: @grey;
     font-family: 300;
-    font-size: @fontsize;
+    font-size: 18px;
   }
   a,
   a:hover,
@@ -143,9 +149,12 @@ html,body {
       box-sizing: border-box;
       display: none;
       position: relative;
+      svg {
+        z-index: -1;
+      }
       .info {
         box-sizing: border-box;
-        height: 115px;
+        height: 120px;
         margin: auto auto;
         max-width: 600px;
         overflow: hidden;
@@ -161,7 +170,7 @@ html,body {
         h4 {
           color: @grey;
           display: inline;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 300;
           margin: 0 0 10px 0;
           // position: relative;
@@ -169,7 +178,7 @@ html,body {
         }
         h3 {
           display: inline;
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
           margin: 0 0 0 0;
           // position: relative;
