@@ -192,12 +192,36 @@ html,body {
     }
     .pause_container {
       bottom: 10px;
+      display: none;
       position: absolute;
       right: 10px;
+      z-index: 6;
       a {
+        padding-top: 40px;
+        padding-left: 40px;
         color: @grey;
         font-size: 16px;
         text-decoration: none;
+        &.disabled {
+          .opacity(0.3);
+        }
+      }
+    }
+    .reload_container {
+      bottom: 10px;
+      display: none;
+      left: 10px;
+      position: absolute;
+      z-index: 6;
+      a {
+        padding-top: 40px;
+        padding-right: 40px;
+        color: @grey;
+        font-size: 16px;
+        text-decoration: none;
+        &.disabled {
+          .opacity(0.3);
+        }
       }
     }
     .feedback_container {
@@ -289,7 +313,6 @@ html,body {
         width: 80px;
         height: 80px;
       }
-      
     }
     .button_text {
       color: #fff;

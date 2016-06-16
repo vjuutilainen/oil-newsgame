@@ -141,7 +141,7 @@
             $('.counter', esivis).text(value - 1);
           }
           else if (value === 1) {
-            $('.controls_container .control', esivis).fadeIn(500);
+            $('.controls_container .control, .pause_container, .reload_container', esivis).fadeIn(500);
             $('.counter_text', esivis).text('Start buying!');
             $('.counter', esivis).text(value - 1);
           }
@@ -150,7 +150,6 @@
             $('.counter', esivis).text('0');
             $('.counter_container', esivis).fadeOut(700);
             if (restart === true) {
-              console.log('restart')
               yleApp.vis.restart();
             }
             else {
@@ -259,7 +258,7 @@
     handleSell: function () {
       var container = $('.feedback_container', esivis).empty().show().height($('.vis_container', esivis).height());
       $('.control', esivis).prop('disabled', true);
-      $('.pause_container a', esivis).addClass('disabled');
+      $('.pause_container a, .reload_container a', esivis).addClass('disabled');
       var month = new Array();
       month[0] = "January";
       month[1] = "February";
@@ -283,7 +282,7 @@
       setTimeout(function () {
         $('.feedback_container', esivis).fadeOut(300);
         $('.control', esivis).prop('disabled', false);
-        $('.pause_container a', esivis).removeClass('disabled');
+        $('.pause_container a, .reload_container a', esivis).removeClass('disabled');
         yleApp.vis.play();
       }, 3000);
     },
