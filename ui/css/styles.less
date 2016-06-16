@@ -1,4 +1,6 @@
 @import 'libs/prefixer.less';
+@import 'libs/font-awesome.min.css';
+
 html,body {
   background-color: #000;
   color: #fff;
@@ -111,10 +113,8 @@ html,body {
     .vis_container {
       box-sizing: border-box;
       display: none;
+      position: relative;
       width: 100%;
-      svg {
-        width: 100% !important;
-      }
     }
 
     // Controls container.
@@ -139,6 +139,21 @@ html,body {
         font-size: 14px;
         padding: 5px;
         width: 100%;
+      }
+      .share_container {
+        text-align: center;
+        a {
+          color: #828282;              
+        }
+        .fa {
+          &.fa-yle-some {
+            font-size: 50px;
+            margin: 15px 30px 0 0;
+            &:hover {
+              color: #777;
+            }
+          }
+        }
       }
     }
   }

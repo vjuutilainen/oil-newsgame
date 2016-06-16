@@ -89,10 +89,6 @@
           // console.log('Assets: ' + yleApp.var.asset)
           yleApp.var.asset = yleApp.var.asset * ((current_price / yleApp.var.lastPrice) - 1) + yleApp.var.asset;
           $('<div>' + yleApp.var.eventIndex + '. Sell price ' + current_price + ' €</div>').prependTo($('.log_container', esivis));
-          if (yleApp.var.eventIndex > 20) {
-            $('.control', esivis).prop('disabled', true);
-            yleApp.printResult();
-          }
         }
         else if (action === 'buy') {
           // yleApp.var.asset = (yleApp.var.lastPrice / current_price) * yleApp.var.asset;
@@ -115,7 +111,15 @@
       });
       $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.controls_container', esivis).hide();
+      yleApp.updateSomeLinks(yleApp.var.highscore.sort().reverse()[0]);
       $('.result_container', esivis).fadeIn(500);
+    },
+    updateSomeLinks: function (highscore) {
+      var url = window.location.href;
+
+      // Twitter share.
+      var twtext = 'I multiplied my assets by ' + highscore + ' times in the oil market! Try it your self';
+      $('.twitter', '#esi-vis').attr({href: 'https://twitter.com/share?url=' + encodeURIComponent(url) + '&hashtags=' + encodeURIComponent('gensummit,oil') + '&text=' + encodeURIComponent(twtext)});
     },
     counter: function (restart) {
       $('.counter', esivis).text('3');
@@ -206,14 +210,14 @@
       });
       // Sell event.
       esivis.on('click', '.control.buy', function (event) {
-        yleApp.vis.sell();
+        yleApp.vis.buy();
         yleApp.calculateAsset('buy');
         $(this).removeClass('buy').addClass('sell').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/sell.png" class="button_img" /></div><div class="button_text">Sell oil</div>');
         event.preventDefault();
       });
       // Buy event.
       esivis.on('click', '.control.sell', function (event) {
-        yleApp.vis.buy();
+        yleApp.vis.sell();
         yleApp.initNumbers($('.asset_value', esivis), yleApp.calculateAsset('sell'), 1000, 'swing');
         $(this).removeClass('sell').addClass('buy').html('<div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Buy oil</div>');
         event.preventDefault();
@@ -226,6 +230,11 @@
         $(this).prop('disabled', true).addClass('disabled');
         $(this).find('.button_text').text('Thank you!');
       });
+    },
+    handleEnd: function () {
+      console.log('asd')
+      $('.control', esivis).prop('disabled', true);
+      yleApp.printResult();
     },
     destroy: function  (argument) {
       yleApp.var.asset = yleApp.roundNr(1, 1);
@@ -248,7 +257,9 @@
       yleApp.fixHeights();
       yleApp.getHighScores();
 
-      new Vis().init(function (vis) {
+      new Vis({
+        onEnd:yleApp.handleEnd
+      }).init(function (vis) {
         yleApp.vis = vis;
       });
     }
