@@ -26,7 +26,7 @@ const formatDateYear = d3.time.format('%Y');
 
 class Vis {
   
-  constructor() {
+  constructor(options) {
     this.width = window.innerWidth;
     this.height = window.innerWidth / 2;
     this.padding = 40;
@@ -52,6 +52,8 @@ class Vis {
     this.currentPrice = null;
     this.transactionData = [];
     this.transition = false;
+
+    this.onEnd = options && options.onEnd ? options.onEnd : false;
 
     window.onresize = () => {
       this.resizeGraph();
@@ -254,6 +256,8 @@ class Vis {
 
     this.updatetransactionMarkers();
 
+    this.onEnd();
+
   }
 
   restart() {
@@ -316,21 +320,6 @@ class Vis {
     this.line
         .attr('stroke-width', 4)
         .attr('d', this.lineGenerator);
-
-//    this.transition = true;
-
-    // this.linecontainer
-    //     .attr('transform', null)
-    //     .transition()
-    //     .duration(1000)
-    //     .attr('transform', 'translate(' + 0 + ', ' + '0)')
-    //     .each('end', () => {
-    //       console.log('dendnd');
-    //       this.transition = false;
-    //     });
-
-        
-        
 
   }
 
