@@ -310,7 +310,7 @@ class Vis {
     this.scaleX.range([0, this.width - this.leftPadding]);
     this.scaleY.range([this.innerHeight, 0]);
     this.axisX.scale(this.scaleX);
-    this.axisY.scale(this.scaleY);
+    this.axisY.scale(this.scaleY).ticks(5);
 
     this.axisGroupX.call(this.axisX);
     this.axisGroupY.call(this.axisY);
