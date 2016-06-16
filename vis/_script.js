@@ -182,9 +182,7 @@ class Vis {
       return curr.date <= this.currentTime ? curr : prev;
     }, this.eventData[0]);
     
-    
-    // ' M' + (this.currentTime.getMonth() + 1)  +
-    let html = '<h4>Year ' + this.currentTime.getFullYear() + ', Price ' + this.currentPrice.toFixed(2).replace('.', ',') + '</h4>' +
+    let html = '<h4>' + this.currentTime.getFullYear() + '</h4>' +
                 '<h3>' + event.title + '</h3>';
                
     this.info.html(html);
