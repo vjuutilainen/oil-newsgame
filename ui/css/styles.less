@@ -8,6 +8,8 @@ html,body {
   padding: 0;
   margin: 0;
 }
+@grey: #828282;
+@fontsize: 20px;
 .container {
   margin: auto auto;
   /* For old browsers */
@@ -23,19 +25,17 @@ html,body {
   }
   ol,
   ul {
-    margin-bottom: 15px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 15px auto;
     max-width: 600px;
   }
   h1 {
-    font-size: 20px;
+    font-size: @fontsize;
     font-weight: 700;
   }
   p {
-    color: #828282;
+    color: @grey;
     font-family: 300;
-    font-size: 20px;
+    font-size: @fontsize;
   }
   a,
   a:hover,
@@ -76,7 +76,7 @@ html,body {
         margin-left: -80px;
       }
       .counter {
-        color: #828282;
+        color: @grey;
         font-size: 150px;
         left: 50%;
         margin-left: -50px;
@@ -96,7 +96,7 @@ html,body {
         padding-top: 10px;
         font-weight: 300;
         .asset_text {
-          color: #828282;
+          color: @grey;
           float: left;
           text-transform: uppercase;
           font-size: 14px;
@@ -136,7 +136,7 @@ html,body {
         position: static;
         width: 100%;
         h4 {
-          color: #828282;
+          color: @grey;
           display: inline;
           font-size: 20px;
           font-weight: 300;
