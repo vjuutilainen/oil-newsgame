@@ -12,6 +12,8 @@ svg {
    user-select: none;   
 }
 
+
+
 .axis-y path {
   
 }
@@ -19,6 +21,10 @@ svg {
 .axis-y text {
   fill: white;
   font-size: 12px;
+}
+
+.vis_container {
+  position: relative;
 }
 
 .vis_container .info {
