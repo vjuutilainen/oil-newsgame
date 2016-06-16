@@ -22,7 +22,8 @@ svg {
 
 .axis-y text {
   fill: white;
-  font-size: 12px;
+  font-size: 8px;
+  font-family: 'Open Sans', Arial;
 }
 
 .vis_container {
