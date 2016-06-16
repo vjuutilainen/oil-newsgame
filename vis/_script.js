@@ -27,8 +27,9 @@ const formatDateYear = d3.time.format('%Y');
 class Vis {
   
   constructor(options) {
+    this.parentContainer = d3.select('#esi-vis .init_container'); 
     this.container = d3.select('.vis_container');
-    this.width = this.container[0][0].getBoundingClientRect().width;
+    this.width = this.parentContainer[0][0].getBoundingClientRect().width;
     this.height = this.width / 2;
     this.padding = 40;
     this.leftPadding = 20;
@@ -127,7 +128,7 @@ class Vis {
   }
 
   resizeGraph() {
-    this.width = this.container[0][0].getBoundingClientRect().width;
+    this.width = this.parentContainer[0][0].getBoundingClientRect().width;
     this.height = this.width / 2;
     this.innerHeight = this.height - (this.padding * 2); 
 
@@ -257,7 +258,7 @@ class Vis {
 
     this.updatetransactionMarkers();
 
-    this.onEnd();
+    if(this.onEnd) this.onEnd();
 
   }
 
