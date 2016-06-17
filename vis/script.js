@@ -13,21 +13,6 @@ if (location.href.match('http://yle.fi/')) {
 var formatDate = d3.time.format('%YM%m');
 var formatDateYear = d3.time.format('%Y');
 
-// const sampleTransactions = [
-//   { date: formatDate.parse('1960M01'), type: 'BUY', price: 1.63 },
-//   { date: formatDate.parse('1965M01'), type: 'BUY', price: 2 },
-//   { date: formatDate.parse('1970M01'), type: 'BUY', price: 3 },
-//   { date: formatDate.parse('1975M01'), type: 'BUY', price: 4 },
-//   { date: formatDate.parse('1980M01'), type: 'BUY', price: 5 },
-//   { date: formatDate.parse('1985M01'), type: 'BUY', price: 6 },
-//   { date: formatDate.parse('1990M01'), type: 'BUY', price: 7 },
-//   { date: formatDate.parse('1995M01'), type: 'BUY', price: 8 },
-//   { date: formatDate.parse('2000M01'), type: 'BUY', price: 9 },
-//   { date: formatDate.parse('2005M01'), type: 'BUY', price: 10 },
-//   { date: formatDate.parse('2010M01'), type: 'BUY', price: 11 },
-//   { date: formatDate.parse('2015M01'), type: 'BUY', price: 12 }
-// ];
-
 var Vis = function () {
   function Vis(options) {
     var _this = this;
@@ -42,7 +27,7 @@ var Vis = function () {
     this.padding = 40;
     this.leftPadding = 0;
     this.priceData = null;
-
+    this.ended = false;
     this.info = this.container.append('div').attr('class', 'info');
     this.svg = this.container.append('svg');
     this.content = this.svg.append('g').attr('class', 'content').attr('transform', 'translate(0, ' + this.padding / 2 + ')');
@@ -64,13 +49,11 @@ var Vis = function () {
     this.currentPrice = null;
     this.transactionData = [];
     this.transition = false;
-
     this.onEnd = options && options.onEnd ? options.onEnd : false;
 
     window.onresize = function () {
       _this.resizeGraph();
       _this.updateGraph();
-      _this.updateInfoMarker();
       _this.updatetransactionMarkers();
     };
   }
@@ -83,7 +66,6 @@ var Vis = function () {
       d3.csv(visPath + 'vis/data/oil.csv', this.transformPriceData, function (err, data) {
         if (err) throw err;
         _this2.priceData = data;
-
         _this2.currentPrice = data[0].price;
         d3.csv(visPath + 'vis/data/events.csv', _this2.transformEventData, function (err, data) {
           if (err) throw err;
@@ -138,7 +120,6 @@ var Vis = function () {
       this.loadData(function (data) {
         _this4.initGraph();
         _this4.initTransactionMarkers();
-        _this4.initInfoMarker();
         _this4.initInfo();
         _this4.resizeGraph();
         _this4.updateGraph();
@@ -168,32 +149,9 @@ var Vis = function () {
       });
     }
   }, {
-    key: 'updateInfoMarker',
-    value: function updateInfoMarker() {
-      // this.infoMarker.attr({
-      //   width: 10,
-      //   height: this.height,
-      //   x: this.width - 10,
-      //   y: 0,
-      // });
-    }
-  }, {
-    key: 'initInfoMarker',
-    value: function initInfoMarker() {
-      // this.infoMarker = this.content.append('rect').attr({
-      //   width: 10,
-      //   height: this.height,
-      //   x: this.width - 10,
-      //   y: 0,
-      //   fill: 'white',
-      //   opacity: 0.5
-      // });
-    }
-  }, {
     key: 'initInfo',
     value: function initInfo() {
 
-      // other intro? !!!
       var html = '';
       this.info.html(html);
     }
@@ -218,18 +176,18 @@ var Vis = function () {
 
       newTime.setDate(newTime.getDate() + 5);
 
-      //newTime.setMonth(newTime.getMonth() + 1);
       this.currentTime = newTime;
       if (this.currentTime > this.finalTime) {
         this.playing = false;
         this.currentTime = this.finalTime;
         this.initInfo();
-        this.end();
-      } else {
-        this.updateInfo();
-        this.updatetransactionMarkers();
-        this.updateGraph();
+        this.ended = true;
+        if (this.onEnd) this.onEnd();
       }
+
+      this.updateInfo();
+      this.updateGraph();
+      this.updatetransactionMarkers();
     }
   }, {
     key: 'play',
@@ -248,46 +206,9 @@ var Vis = function () {
       requestAnimationFrame(tick);
     }
   }, {
-    key: 'end',
-    value: function end() {
-      var _this8 = this;
-
-      var data = this.priceData.filter(function (d) {
-        return d.date >= _this8.beginTime;
-      });
-
-      this.scaleX.domain(d3.extent(data, function (d) {
-        return d.date;
-      }));
-      this.scaleY.domain([0, d3.extent(data, function (d) {
-        return d.price;
-      })[1]]);
-
-      this.scaleX.range([0, this.width - this.leftPadding]);
-      this.scaleY.range([this.innerHeight, 0]);
-      this.axisX.scale(this.scaleX);
-      this.axisY.scale(this.scaleY);
-
-      this.axisGroupX.call(this.axisX);
-      this.axisGroupY.call(this.axisY);
-
-      this.lineGenerator.x(function (d) {
-        return _this8.scaleX(d.date);
-      }).y(function (d) {
-        return _this8.scaleY(d.price);
-      });
-
-      this.line.datum(data);
-
-      this.line.attr('stroke-width', 1).attr('d', this.lineGenerator);
-
-      this.updatetransactionMarkers();
-
-      if (this.onEnd) this.onEnd();
-    }
-  }, {
     key: 'restart',
     value: function restart() {
+      this.ended = false;
       this.currentTime = this.beginTime;
       this.transactionData = [];
       this.updateGraph();
@@ -330,39 +251,35 @@ var Vis = function () {
   }, {
     key: 'updateGraph',
     value: function updateGraph() {
-      var _this9 = this;
+      var _this8 = this;
 
-      var data = this.getDataCrop(this.priceData);
-
+      var data = this.ended ? this.priceData.filter(function (d) {
+        return d.date >= _this8.beginTime;
+      }) : this.getDataCrop(this.priceData);
       this.currentPrice = data[data.length - 1].price;
-
       var xExtent = d3.extent(data, function (d) {
         return d.date;
       });
       var yExtent = d3.extent(data, function (d) {
         return d.price;
       });
-
       this.scaleX.domain(xExtent);
       this.scaleY.domain([0, yExtent[1]]);
-
       this.scaleX.range([0, this.width - this.leftPadding]);
       this.scaleY.range([this.innerHeight, 0]);
       this.axisX.scale(this.scaleX).ticks(d3.time.year, 10);
       this.axisY.scale(this.scaleY).ticks(5);
-
       this.axisGroupX.call(this.axisX);
       this.axisGroupY.call(this.axisY);
-
       this.lineGenerator.x(function (d) {
-        return _this9.scaleX(d.date);
+        return _this8.scaleX(d.date);
       }).y(function (d) {
-        return _this9.scaleY(d.price);
+        return _this8.scaleY(d.price);
       });
 
       this.line.datum(data);
 
-      this.line.attr('stroke-width', 4).attr('d', this.lineGenerator);
+      this.line.attr('stroke-width', this.ended ? 1 : 4).attr('d', this.lineGenerator);
     }
   }, {
     key: 'transformPriceData',
