@@ -301,6 +301,7 @@
       yleApp.var.eventIndex = 0;
       yleApp.var.lastPrice = false;
       $('.container', esivis).scrollTop(0);
+      $('.control', esivis).prop('disabled', false);
       $('.submit', esivis).prop('disabled', false).removeClass('disabled');
       $('.submit', esivis).find('.button_text').text('Submit score');
       $('.asset_value', esivis).text(yleApp.var.asset + '.0');
