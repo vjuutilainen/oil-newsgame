@@ -113,7 +113,7 @@
       $.each(yleApp.var.highscore, function (i, highscore) {
         $('<li>' + yleApp.roundNr(highscore, 1) + ' times</li>').appendTo(list_container);
       });
-      // $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
+      $('<button class="control play_again change_view button" data-show=".game_container" data-hide=".result_container"><div class="button_img_container"><img src="' + yleApp.path + 'ui/img/buy.png" class="button_img" /></div><div class="button_text">Play again</div></button>').appendTo(container);
       $('.controls_container, .feedback_container', esivis).hide();
       $('.result_container', esivis).fadeIn(500);
     },
@@ -141,7 +141,7 @@
             $('.counter', esivis).text(value - 1);
           }
           else if (value === 1) {
-            $('.controls_container .control, .pause_container, .reload_container', esivis).fadeIn(500);
+            $('.controls_container, .pause_container, .reload_container', esivis).fadeIn(500);
             $('.counter_text', esivis).text('Start buying!');
             $('.counter', esivis).text(value - 1);
           }
