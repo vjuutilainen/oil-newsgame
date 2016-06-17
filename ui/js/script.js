@@ -151,6 +151,7 @@
             $('.counter_container', esivis).fadeOut(700);
             if (restart === true) {
               yleApp.vis.restart();
+              yleApp.vis.play();
             }
             else {
               yleApp.vis.play();
