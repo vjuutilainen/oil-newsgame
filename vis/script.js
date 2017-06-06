@@ -6,8 +6,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var visPath = '/';
 
-if (location.href.match('http://yle.fi/')) {
-  visPath = 'http://yle.fi/plus/oil/';
+if (location.href.match('//yle.fi/')) {
+  visPath = '//yle.fi/plus/oil/';
 }
 
 var formatDate = d3.time.format('%YM%m');

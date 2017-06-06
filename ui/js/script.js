@@ -26,8 +26,9 @@
       }
     },
     setPath: function () {
-      if (location.href.match('http://yle.fi/')) {
-        yleApp.path = 'http://yle.fi/plus/oil/';
+      if (location.href.match('//yle.fi/')) {
+        yleApp.path = '//yle.fi/plus/oil/';
+        // TODO. Broken.
         yleApp.php_path = 'http://alpha.yle.fi/plus/alpha/oil/';
       }
       else {

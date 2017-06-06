@@ -2,8 +2,8 @@
 
 let visPath = '/';
 
-if(location.href.match('http://yle.fi/')) {
-  visPath = 'http://yle.fi/plus/oil/';
+if(location.href.match('//yle.fi/')) {
+  visPath = '//yle.fi/plus/oil/';
 }
 
 const formatDate = d3.time.format('%YM%m');
